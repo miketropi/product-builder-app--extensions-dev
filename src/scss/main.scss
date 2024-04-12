@@ -1,0 +1,25 @@
+.product-builder-app {
+
+  .product-builder-container {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.product-builder {
+
+  &__product-image {
+    width: 48%;
+
+    .__product-images {
+
+      img {
+        max-width: 100%;
+      }
+    }
+  }
+
+  &__product-meta {
+    width: 48%;
+  }
+}
