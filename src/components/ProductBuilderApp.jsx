@@ -1,13 +1,16 @@
+import { Fragment } from 'react'; 
 import { useProductBuilderContext } from '../context/ProductBuilderContext';
 import ProductImages from './ProductImages';
-import ProductOptions from './ProductOptions';
+import ProductOptionMeta from './ProductOptionMeta';
 import ProductHeading from './ProductHeading';
+import ProductVariantOptions from './ProductVariantOptions';
 
 export default function ProductBuilderApp() {
   const { 
     loadingInit, 
     shopifyProductObject,
-    productBuilderObject, } = useProductBuilderContext();
+    productBuilderObject, 
+    optionsAvailable } = useProductBuilderContext();
 
   const loadingTemplate = (
     <div>Loading...</div>
@@ -19,7 +22,13 @@ export default function ProductBuilderApp() {
       <ProductImages images={ shopifyProductObject?.product?.images } />
       <div className="product-builder__product-meta">
         <ProductHeading />
-        <ProductOptions options={ productBuilderObject?.builder_design_data } />
+        {
+          optionsAvailable && 
+          <>
+            <ProductVariantOptions options={ optionsAvailable } />
+            <ProductOptionMeta />
+          </>
+        }
       </div>
     </div>
   )
