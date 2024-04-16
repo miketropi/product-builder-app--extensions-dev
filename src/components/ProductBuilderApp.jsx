@@ -4,6 +4,7 @@ import ProductImages from './ProductImages';
 import ProductOptionMeta from './ProductOptionMeta';
 import ProductHeading from './ProductHeading';
 import ProductVariantOptions from './ProductVariantOptions';
+import ProductFooter from './ProductFooter';
 
 export default function ProductBuilderApp() {
   const { 
@@ -27,6 +28,7 @@ export default function ProductBuilderApp() {
           <>
             <ProductVariantOptions options={ optionsAvailable } />
             <ProductOptionMeta />
+            <ProductFooter />
           </>
         }
       </div>

@@ -9,11 +9,12 @@
 .product-builder {
 
   &__product-image {
-    width: 48%;
+    width: 47%;
 
     .__product-images {
       position: sticky;
       top: 30px;
+      margin-top: 10px;
 
       img {
         max-width: 100%;
@@ -22,15 +23,115 @@
   }
 
   &__product-meta {
-    width: 48%;
+    width: 47%;
   }
 
   &__product-heading {
     border-bottom: solid 1px $border-color;
+
+    .__product-title {
+      margin-top: 0;
+    }
+  }
+
+  &__product-footer {
+    margin-top: 2em;
+  }
+
+  &__product-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: .5em;
+  }
+
+  &__buttons {
+
+  }
+
+  &__button-add-to-cart {
+    width: 100%;
+    border-radius: 6px;
+    background: $accent-color;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 13px;
+    display: flex;
+    gap: 10px;
+    transition: .3s ease;
+    -webkit-transition: .3s ease;
+
+    &.__disable {
+      pointer-events: none;
+      opacity: .6;
+      background: #B8B8B8;
+    }
+
+    &:after, &::before {
+      display: none;
+    }
+
+    &:hover {
+      opacity: .8;
+    }
+  }
+
+  &__product-card-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1em;
+    margin-bottom: 2em;
+  }
+
+  &__product-card {
+    padding: .5em;
+    border-radius: 3px;
+    background: #FFF;
+    border: solid 1px $border-color;
+    text-align: center;
+    font-size: 13px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .__product-image {
+      margin-bottom: 1em;
+      
+      img {
+        max-width: 100%;
+        border-radius: 3px;
+      }
+    }
+
+    .__product-title {
+      margin: 0;
+    }
+
+    .__product-price {
+      color: black;
+      font-weight: bold;
+    }
   }
 }
 
 .__box-option {
+
+  &__addon {
+
+  }
+
+  &__addon-item {
+
+    .__addon-heading-tag {
+      background: #EEEFF0;
+      border-radius: 30px;
+      display: inline-block;
+      padding: .6em 1em;
+      color: black;
+      margin-top: 0;
+    }
+  }
 
   .__box-option__heading {
     display: flex;
@@ -42,6 +143,7 @@
       padding: 2em 0;
       margin: 0;
       color: $box-heading-color;
+      cursor: pointer;
     }
 
     .__value {
@@ -115,6 +217,7 @@
   background-color: #E3F3F6;
   color: $accent-color;
   font-weight: bold;
+  line-height: 0;
 
   svg {
     width: 40%;
