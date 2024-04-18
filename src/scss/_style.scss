@@ -18,7 +18,38 @@
 
       img {
         max-width: 100%;
+        width: 100%;
       }
+
+      .__image-slide-nav {
+        padding: 0 15%;
+
+        > .slick-initialized {
+          display: flex;
+        }
+
+        .slick-slide {
+          line-height: 0;
+
+          > div {
+            line-height: 0;
+            font-size: 0;
+          }
+        }
+      }
+
+      .__thumb-nav-item {
+        line-height: 0;
+      }
+
+      .__thumb {
+        background-size: cover;
+        background-color: #333;
+        background-position: center;
+        padding-bottom: 100%;
+        font-size: 0;
+        color: transparent;
+      } 
     }
   }
 
@@ -221,5 +252,28 @@
 
   svg {
     width: 40%;
+  }
+}
+
+.__loading-effect {
+  pointer-events: none !important;
+  position: relative;
+
+  > * {
+    opacity: .3;
+  }
+
+  &:after {
+    content: "updating...";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    color: black;
+    font-size: 10px;
+    font-weight: bold;
+    opacity: 1;
+    line-height: normal;
   }
 }

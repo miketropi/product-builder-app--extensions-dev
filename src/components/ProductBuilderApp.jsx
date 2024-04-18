@@ -19,14 +19,17 @@ export default function ProductBuilderApp() {
 
   const productBuilderTemplate = (
     <div className="product-builder-container">
-      { console.log(productBuilderObject, shopifyProductObject) }
+      {/* { console.log(productBuilderObject, shopifyProductObject) } */}
       <ProductImages images={ shopifyProductObject?.product?.images } />
       <div className="product-builder__product-meta">
         <ProductHeading />
         {
           optionsAvailable && 
           <>
-            <ProductVariantOptions options={ optionsAvailable } />
+            { 
+              optionsAvailable.length > 1 &&
+              <ProductVariantOptions options={ optionsAvailable } />
+            }
             <ProductOptionMeta />
             <ProductFooter />
           </>

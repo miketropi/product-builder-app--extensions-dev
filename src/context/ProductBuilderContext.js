@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { createContext, useContext, useState, useEffect, useRef, useCallback } from "react";
 import ProductBuilderApi from '../libs/api';
 import { getShopifyProductJson } from '../libs/helpers';
 
@@ -15,6 +15,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   const [ optionsSelected, setOptionsSelected ] = useState([]);
   const [ currentStepNumber, setCurrentStepNumber ] = useState(1);
   const [ addToCartEnable, setAddToCartEnable ] = useState(false);
+  const [ addOnCaching, setAddOncaching ] = useState([]);
 
   const __getProduct_Fn = async () => {
     const shopifyProductData = await getShopifyProductJson(productUrl);
@@ -67,7 +68,6 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   }, [variantObjectCurrent])
 
   useEffect(() => {
-    // console.log(optionsSelected)
     let btnAddToCart__Enable = true;
     optionsSelected
       .filter(({ type }) => {
@@ -100,6 +100,11 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   const onAddToCart_Fn = () => {
     console.log(optionsSelected);
   }
+
+  const onPushAddonToCache_Fn = useCallback((item) => {
+    // addOnCaching.push(item);
+    setAddOncaching(prevState => [...prevState, item])
+  }, [addOnCaching])
     
   const value = {
     version: '1.0.0',
@@ -113,12 +118,15 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
     currentStepNumber,
     setCurrentStepNumber, 
     addToCartEnable,
+    addOnCaching,
     onUpadteVariantObjectCurrent_Fn,
     onUpdateOptions_Fn,
     onAddToCart_Fn,
+    onPushAddonToCache_Fn,
   }
 
   return <ProductBuilderContext.Provider value={ value } >
+    {/* { JSON.stringify(addOnCaching) } */}
     { children } 
   </ProductBuilderContext.Provider>   
 }
