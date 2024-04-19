@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef, useCallback } from "react";
 import ProductBuilderApi from '../libs/api';
-import { getShopifyProductJson } from '../libs/helpers';
+import { getShopifyProductJson, addToCart, renderContents } from '../libs/helpers';
 
 const ProductBuilderContext = createContext(null);
 
@@ -16,6 +16,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   const [ currentStepNumber, setCurrentStepNumber ] = useState(1);
   const [ addToCartEnable, setAddToCartEnable ] = useState(false);
   const [ addOnCaching, setAddOncaching ] = useState([]);
+  const [ addToCartLoading, setAddToCartLoading ] = useState(false);
 
   const __getProduct_Fn = async () => {
     const shopifyProductData = await getShopifyProductJson(productUrl);
@@ -97,8 +98,32 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
     setCurrentStepNumber(1)
   }
 
-  const onAddToCart_Fn = () => {
-    console.log(optionsSelected);
+  const onAddToCart_Fn = async () => {
+    const { id } = variantObjectCurrent;
+    // 'cart-notification-product,cart-notification-button,cart-icon-bubble'
+    setAddToCartLoading(true);
+    let formData = {
+      id: id.replace('gid://shopify/ProductVariant/', ''),
+      quantity: 1,
+      properties: (() => {
+        let obj = {}
+        optionsSelected.forEach(o => { 
+          obj[o.name] = o.value
+        })
+        return obj;
+      })(),
+      sections: (() => {
+        return window.__PBA_ADD_TO_CART_SECTIONS ?? ''
+      })()
+    };
+
+    const res = await addToCart(formData);
+    setAddToCartLoading(false);
+    // renderContents(res.sections)
+    // document.querySelector('#cart-notification').classList.add('active');
+    // Create the event
+    let event = new CustomEvent("PBA::AFTER_AJAX_ADD_TO_CART", { detail: res });
+    document.dispatchEvent(event);
   }
 
   const onPushAddonToCache_Fn = useCallback((item) => {
@@ -119,6 +144,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
     setCurrentStepNumber, 
     addToCartEnable,
     addOnCaching,
+    addToCartLoading,
     onUpadteVariantObjectCurrent_Fn,
     onUpdateOptions_Fn,
     onAddToCart_Fn,
