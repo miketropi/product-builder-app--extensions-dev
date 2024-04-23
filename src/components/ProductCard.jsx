@@ -3,7 +3,7 @@ import { toPrice } from "../libs/helpers";
 import { useProductBuilderContext } from "../context/ProductBuilderContext";
 
 export default function ProductCard({ product, parent }) {
-  const { onPushAddonToCache_Fn, addOnCaching } = useProductBuilderContext();
+  const { onPushAddonToCache_Fn, addOnCaching, addonSelected, onAddonSelected_Fn } = useProductBuilderContext();
   const { id, title, displayName, price, image } = product;
   let __title = (title == 'Default Title' ? parent.title : displayName);
 
@@ -26,7 +26,7 @@ export default function ProductCard({ product, parent }) {
       setLoading(true);
       let product_json_url = `/products/${ parent.handle }.json`;
       const res = await fetch(product_json_url)
-      const { product: { variants, images, title } } = await res.json();
+      const { product: { variants, images, image, title } } = await res.json();
       let findItem = variants.find(__v => __v.id == product.id.replace('gid://shopify/ProductVariant/', ''));
       
       let __productDarta = {
@@ -34,7 +34,7 @@ export default function ProductCard({ product, parent }) {
         title: `${ title } - ${ findItem.title }`,
         price: findItem.price,
         thumb: ((_images) => {
-          if(!findItem.image_id) return '';
+          if(!findItem.image_id) return image?.src;
 
           let found = _images.find(i => i.id == findItem.image_id );
           return (found ? found.src : '')
@@ -50,7 +50,16 @@ export default function ProductCard({ product, parent }) {
     __getVariantData();
   }, [parent])
 
-  return <div className={ ['product-builder__product-card', (loading ? '__loading-effect' : '')].join(' ') }>
+  return <div 
+    className={ [
+      'product-builder__product-card', 
+      (loading ? '__loading-effect' : ''), 
+      (addonSelected.includes(productData.id) ? '__selected' : '')
+    ].join(' ') }
+    onClick={ e => {
+      onAddonSelected_Fn(productData.id)
+    } }
+    >
     <div className="__product-image">
       <img src={ productData.thumb } alt={ productData.title } />
     </div>

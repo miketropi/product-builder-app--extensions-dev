@@ -17,6 +17,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   const [ addToCartEnable, setAddToCartEnable ] = useState(false);
   const [ addOnCaching, setAddOncaching ] = useState([]);
   const [ addToCartLoading, setAddToCartLoading ] = useState(false);
+  const [ addonSelected, setAddonSelected ] = useState([]);
 
   const __getProduct_Fn = async () => {
     const shopifyProductData = await getShopifyProductJson(productUrl);
@@ -102,7 +103,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
     const { id } = variantObjectCurrent;
     // 'cart-notification-product,cart-notification-button,cart-icon-bubble'
     setAddToCartLoading(true);
-    let formData = {
+    let mainProduc = {
       id: id.replace('gid://shopify/ProductVariant/', ''),
       quantity: 1,
       properties: (() => {
@@ -111,16 +112,35 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
           obj[o.name] = o.value
         })
         return obj;
-      })(),
-      sections: (() => {
-        return window.__PBA_ADD_TO_CART_SECTIONS ?? ''
       })()
     };
+    
+    let cartDataSend = {
+      items: [
+        // main product
+        mainProduc,
 
-    const res = await addToCart(formData);
+        // push addons
+        ...addonSelected.map(__id => {
+          return {
+            id: __id,
+            quantity: 1,
+          }
+        })
+      ],
+      sections: (() => {
+        // return 'cart-notification-product,cart-notification-button,cart-icon-bubble';
+        return window.__PBA_ADD_TO_CART_SECTIONS ?? ''
+      })()
+    } 
+
+    const res = await addToCart(cartDataSend); 
     setAddToCartLoading(false);
-    // renderContents(res.sections)
-    // document.querySelector('#cart-notification').classList.add('active');
+    if(res?.sections) {
+      renderContents(res.sections);
+      // document.querySelector('#cart-notification').classList.add('active');
+    }
+
     // Create the event
     let event = new CustomEvent("PBA::AFTER_AJAX_ADD_TO_CART", { detail: res });
     document.dispatchEvent(event);
@@ -129,7 +149,21 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   const onPushAddonToCache_Fn = useCallback((item) => {
     // addOnCaching.push(item);
     setAddOncaching(prevState => [...prevState, item])
-  }, [addOnCaching])
+  }, [addOnCaching]);
+
+
+  const onAddonSelected_Fn = (id) => {
+    // addonSelected, setAddonSelected
+    let __addonSelected = [...addonSelected];
+    let foundIndex = __addonSelected.findIndex(__id => __id == id);
+
+    if(foundIndex === -1 ) {
+      setAddonSelected([...__addonSelected, id]);
+    } else {
+      __addonSelected.splice(foundIndex, 1);
+      setAddonSelected(__addonSelected);
+    }
+  }
     
   const value = {
     version: '1.0.0',
@@ -145,10 +179,12 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
     addToCartEnable,
     addOnCaching,
     addToCartLoading,
+    addonSelected,
     onUpadteVariantObjectCurrent_Fn,
     onUpdateOptions_Fn,
     onAddToCart_Fn,
     onPushAddonToCache_Fn,
+    onAddonSelected_Fn,
   }
 
   return <ProductBuilderContext.Provider value={ value } >

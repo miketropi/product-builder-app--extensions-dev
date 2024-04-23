@@ -310,7 +310,9 @@ function ProductCard(_ref) {
     parent = _ref.parent;
   var _useProductBuilderCon = (0,_context_ProductBuilderContext__WEBPACK_IMPORTED_MODULE_2__.useProductBuilderContext)(),
     onPushAddonToCache_Fn = _useProductBuilderCon.onPushAddonToCache_Fn,
-    addOnCaching = _useProductBuilderCon.addOnCaching;
+    addOnCaching = _useProductBuilderCon.addOnCaching,
+    addonSelected = _useProductBuilderCon.addonSelected,
+    onAddonSelected_Fn = _useProductBuilderCon.onAddonSelected_Fn;
   var id = product.id,
     title = product.title,
     displayName = product.displayName,
@@ -333,7 +335,7 @@ function ProductCard(_ref) {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var __getVariantData = /*#__PURE__*/function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var cacheFound, product_json_url, res, _yield$res$json, _yield$res$json$produ, variants, images, title, findItem, __productDarta;
+        var cacheFound, product_json_url, res, _yield$res$json, _yield$res$json$produ, variants, images, image, title, findItem, __productDarta;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
@@ -360,6 +362,7 @@ function ProductCard(_ref) {
               _yield$res$json$produ = _yield$res$json.product;
               variants = _yield$res$json$produ.variants;
               images = _yield$res$json$produ.images;
+              image = _yield$res$json$produ.image;
               title = _yield$res$json$produ.title;
               findItem = variants.find(function (__v) {
                 return __v.id == product.id.replace('gid://shopify/ProductVariant/', '');
@@ -369,7 +372,7 @@ function ProductCard(_ref) {
                 title: "".concat(title, " - ").concat(findItem.title),
                 price: findItem.price,
                 thumb: function (_images) {
-                  if (!findItem.image_id) return '';
+                  if (!findItem.image_id) return image === null || image === void 0 ? void 0 : image.src;
                   var found = _images.find(function (i) {
                     return i.id == findItem.image_id;
                   });
@@ -379,7 +382,7 @@ function ProductCard(_ref) {
               setProductData(__productDarta);
               onPushAddonToCache_Fn(__productDarta);
               setLoading(false);
-            case 21:
+            case 22:
             case "end":
               return _context.stop();
           }
@@ -392,7 +395,10 @@ function ProductCard(_ref) {
     __getVariantData();
   }, [parent]);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-    className: ['product-builder__product-card', loading ? '__loading-effect' : ''].join(' '),
+    className: ['product-builder__product-card', loading ? '__loading-effect' : '', addonSelected.includes(productData.id) ? '__selected' : ''].join(' '),
+    onClick: function onClick(e) {
+      onAddonSelected_Fn(productData.id);
+    },
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "__product-image",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
@@ -480,7 +486,9 @@ function ProductHeading() {
       className: "__product-title",
       children: shopifyProductObject.product.title
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
-      children: shopifyProductObject.product.body_html
+      dangerouslySetInnerHTML: {
+        __html: shopifyProductObject.product.body_html
+      }
     })]
   });
 }
@@ -839,6 +847,10 @@ var ProductBuilderProvider = function ProductBuilderProvider(_ref) {
     _useState20 = _slicedToArray(_useState19, 2),
     addToCartLoading = _useState20[0],
     setAddToCartLoading = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState22 = _slicedToArray(_useState21, 2),
+    addonSelected = _useState22[0],
+    setAddonSelected = _useState22[1];
   var __getProduct_Fn = /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var shopifyProductData, productBuilderData, productVariantsPrice, productBuilderData__FilterAvailable;
@@ -933,13 +945,13 @@ var ProductBuilderProvider = function ProductBuilderProvider(_ref) {
   };
   var onAddToCart_Fn = /*#__PURE__*/function () {
     var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var id, formData, res, event;
+      var id, mainProduc, cartDataSend, res, event;
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
             id = variantObjectCurrent.id; // 'cart-notification-product,cart-notification-button,cart-icon-bubble'
             setAddToCartLoading(true);
-            formData = {
+            mainProduc = {
               id: id.replace('gid://shopify/ProductVariant/', ''),
               quantity: 1,
               properties: function () {
@@ -948,24 +960,38 @@ var ProductBuilderProvider = function ProductBuilderProvider(_ref) {
                   obj[o.name] = o.value;
                 });
                 return obj;
-              }(),
+              }()
+            };
+            cartDataSend = {
+              items: [
+              // main product
+              mainProduc].concat(_toConsumableArray(addonSelected.map(function (__id) {
+                return {
+                  id: __id,
+                  quantity: 1
+                };
+              }))),
               sections: function (_window$__PBA_ADD_TO_) {
+                // return 'cart-notification-product,cart-notification-button,cart-icon-bubble';
                 return (_window$__PBA_ADD_TO_ = window.__PBA_ADD_TO_CART_SECTIONS) !== null && _window$__PBA_ADD_TO_ !== void 0 ? _window$__PBA_ADD_TO_ : '';
               }()
             };
-            _context2.next = 5;
-            return (0,_libs_helpers__WEBPACK_IMPORTED_MODULE_2__.addToCart)(formData);
-          case 5:
+            _context2.next = 6;
+            return (0,_libs_helpers__WEBPACK_IMPORTED_MODULE_2__.addToCart)(cartDataSend);
+          case 6:
             res = _context2.sent;
             setAddToCartLoading(false);
-            // renderContents(res.sections)
-            // document.querySelector('#cart-notification').classList.add('active');
+            if (res !== null && res !== void 0 && res.sections) {
+              (0,_libs_helpers__WEBPACK_IMPORTED_MODULE_2__.renderContents)(res.sections);
+              // document.querySelector('#cart-notification').classList.add('active');
+            }
+
             // Create the event
             event = new CustomEvent("PBA::AFTER_AJAX_ADD_TO_CART", {
               detail: res
             });
             document.dispatchEvent(event);
-          case 9:
+          case 11:
           case "end":
             return _context2.stop();
         }
@@ -981,6 +1007,19 @@ var ProductBuilderProvider = function ProductBuilderProvider(_ref) {
       return [].concat(_toConsumableArray(prevState), [item]);
     });
   }, [addOnCaching]);
+  var onAddonSelected_Fn = function onAddonSelected_Fn(id) {
+    // addonSelected, setAddonSelected
+    var __addonSelected = _toConsumableArray(addonSelected);
+    var foundIndex = __addonSelected.findIndex(function (__id) {
+      return __id == id;
+    });
+    if (foundIndex === -1) {
+      setAddonSelected([].concat(_toConsumableArray(__addonSelected), [id]));
+    } else {
+      __addonSelected.splice(foundIndex, 1);
+      setAddonSelected(__addonSelected);
+    }
+  };
   var value = {
     version: '1.0.0',
     API: API,
@@ -995,10 +1034,12 @@ var ProductBuilderProvider = function ProductBuilderProvider(_ref) {
     addToCartEnable: addToCartEnable,
     addOnCaching: addOnCaching,
     addToCartLoading: addToCartLoading,
+    addonSelected: addonSelected,
     onUpadteVariantObjectCurrent_Fn: onUpadteVariantObjectCurrent_Fn,
     onUpdateOptions_Fn: onUpdateOptions_Fn,
     onAddToCart_Fn: onAddToCart_Fn,
-    onPushAddonToCache_Fn: onPushAddonToCache_Fn
+    onPushAddonToCache_Fn: onPushAddonToCache_Fn,
+    onAddonSelected_Fn: onAddonSelected_Fn
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(ProductBuilderContext.Provider, {
     value: value,
@@ -1163,7 +1204,8 @@ var addToCart = /*#__PURE__*/function () {
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          _context2.next = 2;
+          _context2.prev = 0;
+          _context2.next = 3;
           return fetch("/cart/add.js", {
             method: 'POST',
             headers: {
@@ -1173,14 +1215,18 @@ var addToCart = /*#__PURE__*/function () {
           }).then(function (res) {
             return res.json();
           });
-        case 2:
+        case 3:
           res = _context2.sent;
           return _context2.abrupt("return", res);
-        case 4:
+        case 7:
+          _context2.prev = 7;
+          _context2.t0 = _context2["catch"](0);
+          return _context2.abrupt("return", false);
+        case 10:
         case "end":
           return _context2.stop();
       }
-    }, _callee2);
+    }, _callee2, null, [[0, 7]]);
   }));
   return function addToCart(_x2) {
     return _ref2.apply(this, arguments);

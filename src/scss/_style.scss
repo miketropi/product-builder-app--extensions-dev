@@ -132,10 +132,12 @@
     border: solid 1px $border-color;
     text-align: center;
     font-size: 13px;
-
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    cursor: pointer;
+    transition: .3s ease;
+    -webkit-transition: .3s ease;
 
     .__product-image {
       margin-bottom: 1em;
@@ -148,11 +150,25 @@
 
     .__product-title {
       margin: 0;
+      transition: .3s ease;
+      -webkit-transition: .3s ease;
     }
 
     .__product-price {
       color: black;
       font-weight: bold;
+      transition: .3s ease;
+      -webkit-transition: .3s ease;
+    }
+
+    &.__selected {
+      background: black;
+
+      .__product-title, 
+      .__product-price,
+      .__product-image {
+        color: white;
+      }
     }
   }
 }

@@ -10,15 +10,19 @@ export const toPrice = (price) => {
 }
 
 export const addToCart = async (data) => {
-  const res = await fetch(`/cart/add.js`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  }).then(res => res.json());
-
-  return res;
+  try {
+    const res = await fetch(`/cart/add.js`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(res => res.json());
+  
+    return res;
+  } catch (err) { 
+    return false;
+  }
 }
 
 export const renderContents = (contentObj) => {
