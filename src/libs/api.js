@@ -33,4 +33,13 @@ export default class ProductBuilderApi {
     const res = await this.__request(`content/item/product?filter=${ JSON.stringify(filter) }`)
     return res;
   }
+
+  async getMenu(menuID) {
+    try {
+      const res = await this.__request(`content/item/menubuilder/${ menuID }`);
+      return res;
+    } catch(err) {
+      return false
+    }
+  }
 }
