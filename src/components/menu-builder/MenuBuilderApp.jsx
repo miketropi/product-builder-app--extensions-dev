@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { useMenuBuilderContext } from "../../context/MenuBuilderContext";
 import MenuIcon from "./MenuIcon";
+import MenuMobi from "./MenuMobi";
 
 export default function MenuBuilderApp() {
   const { version, menuData } = useMenuBuilderContext();
@@ -52,7 +53,7 @@ export default function MenuBuilderApp() {
                     return __c[__type];
                   })(type) }>
                     <img src={ item.image } />
-                  </div>
+                  </div> 
                 }
                 <span className="__menu-item-name">
                   { name }
@@ -96,5 +97,6 @@ export default function MenuBuilderApp() {
 
   return <div className="menu-builder-container">
     { (menuData && menuData.length > 0) && renderMenu(menuData) }
+    <MenuMobi />
   </div>
 }
