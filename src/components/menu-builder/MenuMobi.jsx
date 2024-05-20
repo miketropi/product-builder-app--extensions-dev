@@ -4,7 +4,14 @@ import { useMenuBuilderContext } from "../../context/MenuBuilderContext";
 import MenuIcon from "./MenuIcon";
 
 export default function MenuMobi() {
-  const { mobiMenuData, mobiItemsCurrent, setMobiItemsCurrent, jumpDeep, onJumpMobiNav_Fn, onBack_Fn } = useMenuBuilderContext();
+  const { 
+    mobiMenuData, 
+    mobiItemsCurrent, 
+    setMobiItemsCurrent, 
+    jumpDeep, 
+    onJumpMobiNav_Fn, 
+    onBack_Fn,
+    parentItem } = useMenuBuilderContext();
   const wrapEl = useRef(null);
 
   useEffect(() => {
@@ -28,6 +35,24 @@ export default function MenuMobi() {
               e.preventDefault();
               onBack_Fn()
             } }><MenuIcon source={ 'arrow_back' } /> Back</a>
+            {/* { JSON.stringify(jumpDeep) }
+            { console.log(parentItem) } */}
+          </li>
+        }
+        {
+          ['__MEGASHOP_SUBITEM__'].includes(parentItem?.type) && 
+          parentItem?.config && 
+          <li className={ ['__custom-menu-item', `__custom-type__${ parentItem?.type }`].join(' ') }>
+            {/* { JSON.stringify(parentItem?.config) } */}
+            <div className="__mobi-menu-banner" style={{ background: `url(${ parentItem?.config?.background_image }) no-repeat, center center / cover, #333` }}>
+              <h4>{ parentItem?.name }</h4>
+              {
+                parentItem?.config?.custom_text && 
+                <a href={ parentItem?.config?.custom_url }>
+                  { parentItem?.config?.custom_text }
+                </a>
+              }
+            </div>
           </li>
         }
         {
@@ -58,15 +83,32 @@ export default function MenuMobi() {
                 </span>
               </a>
               { children && children.length > 0 
-                ? <MenuIcon  
-                  onClick={ e => {
-                    onJumpMobiNav_Fn(__key)
-                  } } 
-                  className={ 'dropdown-icon' } 
-                  source={ 'arrow_next' } /> 
+                ? (() => {
+                  let supportArrow = ['__BLOCK_MENU__'].includes(item.type) ? false : true;
+                  return supportArrow && 
+                        <MenuIcon  
+                          onClick={ e => {
+                            onJumpMobiNav_Fn(__key)
+                          } } 
+                          className={ 'dropdown-icon' } 
+                          source={ 'arrow_next' } 
+                        />
+                })() 
                 : '' 
               }
               {/* { (children && children.length > 0) && renderMenuMobi(children, lv, item) } */}
+
+              {
+                ['__BLOCK_MENU__'].includes(item.type) && 
+                item?.children?.length > 0 && 
+                <ul className={ `__sub-custom-type__${ item.type }` }>
+                  {
+                    item.children.map(__i => {
+                      return <li className={ `__sub-item-type__${ __i?.type }` }>{ __i.name }</li>
+                    })
+                  }
+                </ul>
+              }
             </li>
           })
         }

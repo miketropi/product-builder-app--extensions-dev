@@ -10,6 +10,7 @@ const MenuBuilderContext_Provider = ({ children, menuId, storeId, API_ENDPOINT, 
   const [mobiMenuData, setMobiMenuData] = useState(null);
   const [mobiItemsCurrent, setMobiItemsCurrent] = useState(null);
   const [jumpDeep, setJumpDeep] = useState([]);
+  const [parentItem, setParentItem] = useState(null);
 
   const fixDataMenu = (menuData) => {
     let megaShopItem = menuData.find(i => i.type == '__MEGASHOP__');
@@ -50,20 +51,28 @@ const MenuBuilderContext_Provider = ({ children, menuId, storeId, API_ENDPOINT, 
   const onJumpMobiNav_Fn = (id) => {
     const found = deepSearch_API(mobiMenuData, id);
     const { parentNode, node } = found.hook();
-    setMobiItemsCurrent(found.children)
+    setParentItem(found);
+    setMobiItemsCurrent(found.children);
     setJumpDeep([...jumpDeep, id]);
   }
 
   const onBack_Fn = () => {
     let _jumpDeep = [...jumpDeep];
     let last = _jumpDeep.slice(-1)[0];
-    _jumpDeep.splice(last, 1);
+    _jumpDeep.splice((_jumpDeep.length - 1), 1);
 
     const found = deepSearch_API(mobiMenuData, last);
     const { parentNode, node } = found.hook();
-
+    
     setJumpDeep(_jumpDeep);
-    setMobiItemsCurrent( (_jumpDeep.length > 0 ? parentNode : mobiMenuData) );
+    if(_jumpDeep.length == 0) {
+      setParentItem(null);
+      setMobiItemsCurrent(mobiMenuData);
+    } else {
+      setParentItem(deepSearch_API(mobiMenuData, _jumpDeep[_jumpDeep.length - 1]));
+      setMobiItemsCurrent(parentNode);
+    }
+    // setMobiItemsCurrent( (_jumpDeep.length > 0 ? parentNode : mobiMenuData) );
   }
 
   const value = {
@@ -74,6 +83,7 @@ const MenuBuilderContext_Provider = ({ children, menuId, storeId, API_ENDPOINT, 
     mobiMenuData, setMobiMenuData,
     mobiItemsCurrent, setMobiItemsCurrent,
     jumpDeep, setJumpDeep,
+    parentItem, setParentItem,
     onBack_Fn,
     onJumpMobiNav_Fn,
   }
