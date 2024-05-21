@@ -9,4 +9,4 @@ mix
   .setPublicPath('./theme-extension/assets/')
 
 // mix.copyDirectory('./theme-extension', '../product-builder-app/extensions/theme-extension');
-mix.copyDirectory('./theme-extension', '../product-builder-app--dev-env/extensions/theme-extension');
+mix.copyDirectory('./theme-extension', '../product-builder-app/extensions/theme-extension');
