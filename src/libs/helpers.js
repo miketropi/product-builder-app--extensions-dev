@@ -6,7 +6,18 @@ export const getShopifyProductJson = async (productURL) => {
 export const toPrice = (price) => {
   let money_format = window.__MONEY_FORMAT;
   let __price = new Intl.NumberFormat('en-DE').format(price);
-  return money_format.replace('{{amount_no_decimals_with_comma_separator}}', __price);
+  let replaceMap = {
+    '{{ amount_no_decimals }}': __price, 
+    '{{amount_no_decimals}}': __price, 
+    '{{ amount_no_decimals_with_comma_separator }}': __price, 
+    '{{amount_no_decimals_with_comma_separator}}': __price,
+  }
+
+  Object.keys(replaceMap).forEach((key) => {
+    money_format = money_format.replaceAll(key, replaceMap[key]);  
+  });
+  return money_format;
+  // return money_format.replace('{{amount_no_decimals_with_comma_separator}}', __price);
 }
 
 export const addToCart = async (data) => {
