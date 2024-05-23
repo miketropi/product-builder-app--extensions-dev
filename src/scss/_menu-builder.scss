@@ -28,7 +28,9 @@ ul.menu-builder {
     visibility: hidden;
     opacity: 0;
     z-index: -1;
-
+    &.sub-lv__1 {
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    }
     .__menu-item {
       border-bottom: solid 1px #ECECEC;
 
@@ -97,7 +99,11 @@ ul.menu-builder {
   }
 
   > li.__menu-item {
-
+    &.__menu-item_type____MEGASHOP__ {
+      > a {
+        background: #323C44; 
+      }
+    }
     > a {
       display: flex;
       padding: 25px 24px;
@@ -128,6 +134,7 @@ ul.menu-builder {
 
   li.__menu-item {
     list-style: none;
+    margin: 0;
     transition: .3s ease;
     -webkit-transition: .3s ease;
 
@@ -255,6 +262,21 @@ ul.__type__MEGASHOP_SUBITEM__ {
     padding: 40px;
     box-sizing: border-box;
     width: calc(100% / 2);
+    a {
+      font-size: 14px !important;
+      padding: 8px 0 !important;
+      font-weight: 400 !important;
+    }
+    &.__item-lv-2 {
+      > a {
+        font-weight: 600 !important;
+        margin-bottom: 8px !important;
+        padding: 10px 0 !important;
+      }
+      li.__menu-item {
+        border: none;
+      }
+    }
   }
 
   .menu-builder__sub {
@@ -366,13 +388,16 @@ li.__menu-item_type____BLOCK_BRAND__ {
 
 li.__menu-item_type____BLOCK_BRAND_ITEM__ {
   border-bottom: none !important;
-
+  a {
+    border: 2px solid #fff;
+    border-radius: 4px;
+  }
   &:hover,
   &.__is-hover {
-
     a {
-      background: #eee !important;
+      background: #fff !important;
       color: $link_color_accent !important; 
+      border-color: $accent-color; 
     }
   }
 
@@ -409,6 +434,7 @@ li.__menu-item_type____BLOCK_MENU_IMAGE__ {
     letter-spacing: 0.32px;
     color: $accent_color !important;
     border-bottom: 1.5px solid #004f5936 !important;
+    margin-bottom: 16px;
     padding: 16px 0 !important;
   }
 
@@ -477,6 +503,7 @@ li.__menu-item_type____BLOCK_MENU_IMAGE__ {
 
 ul.__type__BLOCK_MENU_IMAGE__ {
   display: flex;
+  gap: 8px;
   background: none !important;
   width: 100%;
 
@@ -494,8 +521,9 @@ li.__menu-item_type____BLOCK_MENU_IMAGE_ITEM__ {
     font-size: 12px !important;
     text-align: center;
     line-height: normal;
-    padding: 20px 12px !important;
-
+    padding: 8px 4px !important;
+    border: 2px solid #fff;
+    border-radius: 4px;
     .__image {
       line-height: 0;
       margin-bottom: 12px;
@@ -518,6 +546,7 @@ li.__menu-item_type____BLOCK_MENU_IMAGE_ITEM__ {
 
     > a {
       color: $accent_color !important; 
+      border-color: $accent_color;
     }
   }
 }
