@@ -195,7 +195,7 @@ ul.__type__MEGASHOP_SUBITEM__ {
   left: 100%;
   top: 0;
   width: 720px;
-  padding-bottom: 40px !important;
+  padding-bottom: 12px !important;
   display: flex;
   flex-wrap: wrap;
   background: #DADDDE !important;
@@ -309,7 +309,7 @@ ul.__type__MEGASHOP_SUBITEM__ {
 }
 
 li.__menu-item_type____BLOCK_MENU__ {
-  padding: 25px 40px 0 !important;
+  padding: 8px 24px 0 !important;
   border-bottom: none !important;
 
   > a {
@@ -518,6 +518,7 @@ li.__menu-item_type____BLOCK_MENU_IMAGE_ITEM__ {
   > a {
     display: flex;
     flex-direction: column;
+    height: 100%;
     font-size: 12px !important;
     text-align: center;
     line-height: normal;
