@@ -145,8 +145,24 @@ ul.menu-builder {
         }
       }
       ul.__type__MEGASHOP_SUBITEM__ {
-        min-height: var(--sub-megashop-height);
+        height: var(--sub-megashop-height);
         align-content: flex-start;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+          width: 3px;
+          height: 3px;
+          border-radius: 10px;
+          background-color: #F1F1F1;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 10px;
+          background-color: $accent-color;
+          cursor: pointer;
+        }
+        &::-webkit-scrollbar-track {
+          border-radius: 10px;
+          background-color: #F1F1F1;
+        }
       }
     }
     > a {
