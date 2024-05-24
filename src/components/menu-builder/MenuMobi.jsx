@@ -125,7 +125,7 @@ export default function MenuMobi() {
                     item.children.map(__i => {
                       return <li className={ `__sub-item-type__${ __i?.type }` }>
                         <a href={ __i.url }>
-                          <div class="__image">
+                          <div className="__image">
                             <img src={ __i.image } />
                           </div>
                           <span className="__menu-item-name">{ __i.name }</span>
@@ -145,7 +145,7 @@ export default function MenuMobi() {
                     item.children.map(__i => {
                       return <li className={ `__sub-item-type__${ __i?.type }` }>
                         <a href={ __i.url }>
-                          <div class="__image">
+                          <div className="__image">
                             <img src={ __i.image } />
                           </div>
                           <span className="__menu-item-name">{ __i.name }</span>
@@ -165,10 +165,10 @@ export default function MenuMobi() {
           parentItem?.config && 
           <li className={ ['__custom-menu-item', `__custom-type__${ parentItem?.type }`].join(' ') }>
             {/* { JSON.stringify(parentItem?.config) } */}
-            <div class="__mobi-menu-custom-link">
+            <div className="__mobi-menu-custom-link">
               <a href={ parentItem?.config?.container_bottom_custom_url }>
                 { parentItem?.config?.container_bottom_custom_text } 
-                <span class="__menu-icon "><MenuIcon source={ 'arrow_next' } /></span>
+                <span className="__menu-icon "><MenuIcon source={ 'arrow_next' } /></span>
               </a>
             </div>
           </li>
@@ -200,8 +200,8 @@ export default function MenuMobi() {
             (mobiItemsCurrent && mobiItemsCurrent.length > 0) && 
             <div className="menu-builder-mobi-container">
               <div className="menu-builder-mobi__inner">
-                <div class="menu-builder-mobi__head">
-                  <a href="/" class="menu-builder-mobi__logo">
+                <div className="menu-builder-mobi__head">
+                  <a href="/" className="menu-builder-mobi__logo">
                     <svg width="26" height="22" viewBox="0 0 26 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M20.2107 7.76356C22.0337 8.1548 23.5241 9.03596 24.5906 10.5603C26.1261 12.7568 26.4294 15.1611 25.3888 17.6386C24.3505 20.1103 22.4666 21.551 19.8488 21.9086C19.4035 21.9689 18.9514 21.9956 18.5016 21.9956C12.6008 22.0014 6.69997 21.9991 0.800312 21.9991C0.561304 21.9991 0.322296 21.9991 0.032555 21.9991C0.0201537 21.7263 0.00211533 21.5208 0.00211533 21.3153C-0.000139464 19.322 -0.00239426 17.3298 0.00211533 15.3364C0.00662491 13.0041 1.63684 11.3219 3.91869 11.3161C7.22647 11.3079 10.5331 11.3172 13.8409 11.3137C15.2524 11.3126 16.5185 10.7089 17.3606 9.60134C17.116 9.59089 16.9266 9.57464 16.7372 9.57464C12.4711 9.57348 8.20617 9.58045 3.94011 9.57C1.90516 9.56535 0.400086 8.28251 0.0539755 6.25781C-0.0204326 5.82477 0.00549751 5.372 0.00437012 4.92736C-0.00126686 3.32757 0.000987932 1.72546 0.000987932 0.0618192C0.217448 0.043244 0.396704 0.0153813 0.574832 0.0153813C4.9728 0.0118984 9.36965 0.0432441 13.7665 0.000288909C17.311 -0.0333786 20.2896 2.87944 20.302 6.66878C20.3031 7.01243 20.2468 7.35723 20.2107 7.76356ZM1.83188 20.0859C2.07201 20.0975 2.23887 20.1126 2.4046 20.1126C7.83639 20.1137 13.2682 20.1161 18.7 20.1091C19.1487 20.1091 19.6064 20.0812 20.0461 19.9918C22.5331 19.4799 24.2276 17.187 24.1295 14.5006C24.0393 12.0417 22.0923 9.92525 19.6413 9.62224C19.6256 9.63269 19.6053 9.63966 19.5951 9.65359C19.5613 9.69886 19.5264 9.74414 19.4982 9.7929C18.1273 12.1369 16.1194 13.2421 13.4565 13.2061C10.2806 13.1631 7.10358 13.1922 3.92771 13.198C2.77438 13.2003 1.88599 13.9352 1.84766 15.0416C1.79016 16.7017 1.83301 18.3654 1.83301 20.087L1.83188 20.0859ZM18.4756 7.68926C18.4193 6.87776 18.4508 6.15681 18.3065 5.47533C17.8556 3.3415 15.8905 1.88451 13.8792 1.89844C10.0461 1.9263 6.21294 1.90425 2.37979 1.90657C2.21632 1.90657 2.05172 1.92979 1.90741 1.9414C1.87359 2.01221 1.84315 2.04588 1.84315 2.07955C1.83526 3.1244 1.87246 4.17042 1.81497 5.21179C1.7338 6.67343 2.54327 7.71828 4.21858 7.70319C8.68983 7.66488 13.1622 7.69042 17.6335 7.69042C17.8556 7.69042 18.0777 7.69042 18.4734 7.69042L18.4756 7.68926Z" fill="#19242D"/>
                     </svg>
@@ -217,7 +217,7 @@ export default function MenuMobi() {
                     </svg>
                   </a>
 
-                  <a href="#" class="menu-builder-mobi__close">
+                  <a href="#" className="menu-builder-mobi__close">
                     <MenuIcon source={ 'menu_close' } /> 
                   </a>
                 </div>

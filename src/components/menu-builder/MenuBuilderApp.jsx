@@ -104,7 +104,7 @@ export default function MenuBuilderApp() {
 
   return <div className="menu-builder-container">
     { (menuData && menuData.length > 0) && renderMenu(menuData) }
-    <a href="#" class="menu-builder-mobi__open">
+    <a href="#" className="menu-builder-mobi__open">
       <MenuIcon source={ 'menu_toggle' } /> 
     </a>
     <MenuMobi />
