@@ -177,7 +177,7 @@ export default function MenuMobi() {
         {
           
           jumpDeep.length == 0 &&
-          <li className="__menu-item __menu-item-type__custom-html" dangerouslySetInnerHTML={{ __html: window?.__custom_html }}></li>
+          <li className="__menu-item __menu-item-type__custom-html"></li>
         }
       </>
     )
