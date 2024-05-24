@@ -1950,8 +1950,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var ENDPOINT = 'https://shopify-dev.beplusprojects.com/api/';
-var API_KEY = 'API-7fe65d4d3bbf95285235f51e4183207387b5169f';
+var ENDPOINT = 'https://buildmat-app-api.fly.dev/api/';
+var API_KEY = 'API-ceab35274bec67420ab7f572d7288daa81a4e455';
 (function (w) {
   'use strict';
 
