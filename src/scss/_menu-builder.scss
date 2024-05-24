@@ -142,6 +142,7 @@ ul.menu-builder {
         > ul {
           opacity: 1 !important;
           visibility: visible !important;
+          z-index: 9 !important;
         }
       }
       ul.__type__MEGASHOP_SUBITEM__ {
