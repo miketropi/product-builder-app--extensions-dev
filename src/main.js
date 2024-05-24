@@ -5,8 +5,8 @@ import ProductBuilderApp from './components/ProductBuilderApp';
 import { MenuBuilderContext_Provider } from './context/MenuBuilderContext';
 import MenuBuilderApp from './components/menu-builder/MenuBuilderApp';
 
-const ENDPOINT = 'https://shopify-dev.beplusprojects.com/api/';
-const API_KEY = 'API-7fe65d4d3bbf95285235f51e4183207387b5169f';
+const ENDPOINT = 'https://buildmat-app-api.fly.dev/api/';
+const API_KEY = 'API-ceab35274bec67420ab7f572d7288daa81a4e455';
 
 ((w) => {
   'use strict';
