@@ -95,7 +95,7 @@ export default function MenuBuilderApp() {
       }
       {
         __parent_item?.type && __parent_item.type == '__MEGASHOP__' && 
-        <li dangerouslySetInnerHTML={{ __html: window?.__custom_html }}></li> 
+        <li className="__menu-item __menu-item-type__custom-html" dangerouslySetInnerHTML={{ __html: window?.__custom_html }}></li> 
       }
     </ul>)
 
