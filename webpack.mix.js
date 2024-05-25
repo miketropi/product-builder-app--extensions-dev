@@ -8,5 +8,4 @@ mix
   .sass('./src/scss/main.scss', 'product-builder.bundle.css')
   .setPublicPath('./theme-extension/assets/')
 
-// mix.copyDirectory('./theme-extension', '../product-builder-app/extensions/theme-extension');
-mix.copyDirectory('./theme-extension', '../product-builder-app/extensions/theme-extension');
+mix.copyDirectory('./theme-extension', process.env.COPY_PATH);

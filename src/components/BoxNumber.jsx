@@ -4,4 +4,4 @@ export default function BoxNumber({ number, active }) {
   return <span className="__box-number">
     { active ? activeIcon : number }
   </span>
-}
+} 

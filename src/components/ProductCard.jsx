@@ -57,7 +57,7 @@ export default function ProductCard({ product, parent }) {
       (addonSelected.includes(productData.id) ? '__selected' : '')
     ].join(' ') }
     onClick={ e => {
-      onAddonSelected_Fn(productData.id)
+      onAddonSelected_Fn(productData.id, price);
     } }
     >
     <div className="__product-image">

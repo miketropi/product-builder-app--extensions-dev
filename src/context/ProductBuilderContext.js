@@ -18,6 +18,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   const [ addOnCaching, setAddOncaching ] = useState([]);
   const [ addToCartLoading, setAddToCartLoading ] = useState(false);
   const [ addonSelected, setAddonSelected ] = useState([]);
+  const [ addonWithPrice, setAddonWithPrice ] = useState([]);
 
   const __getProduct_Fn = async () => {
     const shopifyProductData = await getShopifyProductJson(productUrl);
@@ -152,16 +153,24 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   }, [addOnCaching]);
 
 
-  const onAddonSelected_Fn = (id) => {
+  const onAddonSelected_Fn = (id, price) => { console.log(price);
     // addonSelected, setAddonSelected
+    // addonWithPrice, setAddonWithPrice
+
     let __addonSelected = [...addonSelected];
     let foundIndex = __addonSelected.findIndex(__id => __id == id);
 
+    let __addonWithPrice = [...addonWithPrice];
+
     if(foundIndex === -1 ) {
       setAddonSelected([...__addonSelected, id]);
+      setAddonWithPrice([...__addonWithPrice, { id, price }])
     } else {
       __addonSelected.splice(foundIndex, 1);
       setAddonSelected(__addonSelected);
+
+      __addonWithPrice.splice(foundIndex, 1);
+      setAddonWithPrice(__addonWithPrice)
     }
   }
     
@@ -180,6 +189,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
     addOnCaching,
     addToCartLoading,
     addonSelected,
+    addonWithPrice,
     onUpadteVariantObjectCurrent_Fn,
     onUpdateOptions_Fn,
     onAddToCart_Fn,
