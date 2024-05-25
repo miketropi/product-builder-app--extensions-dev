@@ -40,6 +40,7 @@ export default function MenuBuilderApp() {
               '__menu-item', 
               `__item-lv-${ lv }`, 
               size,
+              (children && children.length > 0 ? `__has-children` : ''),
               (item.type ? `__menu-item_type__${ type }` : ''),
             ];
 
