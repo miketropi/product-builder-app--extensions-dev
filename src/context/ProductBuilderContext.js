@@ -153,7 +153,8 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   }, [addOnCaching]);
 
 
-  const onAddonSelected_Fn = (id, price) => { console.log(price);
+  const onAddonSelected_Fn = (id, price) => { 
+    // console.log(price);
     // addonSelected, setAddonSelected
     // addonWithPrice, setAddonWithPrice
 

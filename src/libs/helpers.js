@@ -5,7 +5,7 @@ export const getShopifyProductJson = async (productURL) => {
 
 export const toPrice = (price) => {
   let money_format = window.__MONEY_FORMAT;
-  let __price = new Intl.NumberFormat('en-DE').format(price);
+  let __price = new Intl.NumberFormat('en-US', {}).format(price);
   let replaceMap = {
     '{{ amount_no_decimals }}': __price, 
     '{{amount_no_decimals}}': __price, 
