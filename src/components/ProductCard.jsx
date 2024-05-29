@@ -2,8 +2,8 @@ import { useEffect, useCallback, useState } from "react";
 import { toPrice } from "../libs/helpers";
 import { useProductBuilderContext } from "../context/ProductBuilderContext";
 
-export default function ProductCard({ product, parent }) {
-  const { onPushAddonToCache_Fn, addOnCaching, addonSelected, onAddonSelected_Fn } = useProductBuilderContext();
+export default function ProductCard({ optkey, product, parent }) {
+  const { onPushAddonToCache_Fn, addOnCaching, addonSelected, onAddonSelected_Fn, userAddonSelected } = useProductBuilderContext();
   const { id, title, displayName, price, image } = product;
   let __title = (title == 'Default Title' ? parent.title : displayName);
 
@@ -54,10 +54,14 @@ export default function ProductCard({ product, parent }) {
     className={ [
       'product-builder__product-card', 
       (loading ? '__loading-effect' : ''), 
-      (addonSelected.includes(productData.id) ? '__selected' : '')
+      // (addonSelected.includes(productData.id) ? '__selected' : ''),
+      (() => {
+        let f = userAddonSelected.find(a => (a.id == productData.id && a.optkey == optkey));
+        return (f ? '__selected' : '');
+      })()
     ].join(' ') }
     onClick={ e => {
-      onAddonSelected_Fn(productData.id, price);
+      onAddonSelected_Fn(productData.id, price, optkey);
     } }
     >
     <div className="__product-image">

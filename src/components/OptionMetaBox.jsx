@@ -35,12 +35,13 @@ export default function OptionMetaBox({ boxOption, indexNum, onSelect, value, to
           return <div key={ __key } className="__box-option__addon-item">
             <h4 className="__addon-heading-tag">{ name }</h4>
             <div className="product-builder__product-card-list">
+              {/* { boxOption.__key } { boxOption.name } */}
               {
                 products.length > 0 && 
                 products.map((__p) => { // #product
                   return __p.variants.map((__v) => { // #variant
                     const { id } = __v;
-                    return <ProductCard key={ id } product={ __v } parent={ __p } />
+                    return <ProductCard optkey={ boxOption.__key }  key={ id } product={ __v } parent={ __p } />
                   })
                 })
               }

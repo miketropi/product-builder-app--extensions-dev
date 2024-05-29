@@ -3,6 +3,7 @@ import ProductBuilderApi from '../libs/api';
 import { getShopifyProductJson, addToCart, renderContents } from '../libs/helpers';
 
 const ProductBuilderContext = createContext(null);
+const __ADDON_MULTIPLE_SUPPORT = false;
 
 const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   const { storeId, productId, productUrl } = QUERY;
@@ -19,6 +20,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   const [ addToCartLoading, setAddToCartLoading ] = useState(false);
   const [ addonSelected, setAddonSelected ] = useState([]);
   const [ addonWithPrice, setAddonWithPrice ] = useState([]);
+  const [ userAddonSelected, setUserAddonSelected ] = useState([]);
 
   const __getProduct_Fn = async () => {
     const shopifyProductData = await getShopifyProductJson(productUrl);
@@ -122,9 +124,9 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
         mainProduc,
 
         // push addons
-        ...addonSelected.map(__id => {
+        ...userAddonSelected.map(a => { 
           return {
-            id: __id,
+            id: a.id,
             quantity: 1,
           }
         })
@@ -153,10 +155,35 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   }, [addOnCaching]);
 
 
-  const onAddonSelected_Fn = (id, price) => { 
+  const onAddonSelected_Fn = (id, price, optkey) => { 
+    // userAddonSelected, setUserAddonSelected
+    let __userAddonSelected = [...userAddonSelected];
+    let __foundIndex = __userAddonSelected.findIndex(a => (a.id == id && a.optkey == optkey));
+
+    if(__foundIndex == -1) {
+      // add if not found
+      if(__ADDON_MULTIPLE_SUPPORT) {
+        __userAddonSelected.push({ id, price, optkey });
+      } else {
+        let __foundOptkeyItemIndex = __userAddonSelected.findIndex(a => (a.optkey == optkey));
+        if(__foundOptkeyItemIndex == -1) {
+          __userAddonSelected.push({ id, price, optkey });
+        } else {
+          __userAddonSelected[__foundOptkeyItemIndex].id = id;
+          __userAddonSelected[__foundOptkeyItemIndex].price = price;
+        }
+      }
+      
+    } else {
+      // remove if exists
+      __userAddonSelected.splice(__foundIndex, 1); 
+    }
+    setUserAddonSelected(__userAddonSelected);
+    return;
     // console.log(price);
     // addonSelected, setAddonSelected
     // addonWithPrice, setAddonWithPrice
+    // console.log(optkey);
 
     let __addonSelected = [...addonSelected];
     let foundIndex = __addonSelected.findIndex(__id => __id == id);
@@ -191,6 +218,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
     addToCartLoading,
     addonSelected,
     addonWithPrice,
+    userAddonSelected, setUserAddonSelected,
     onUpadteVariantObjectCurrent_Fn,
     onUpdateOptions_Fn,
     onAddToCart_Fn,
