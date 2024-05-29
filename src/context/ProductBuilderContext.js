@@ -180,26 +180,20 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
     }
     setUserAddonSelected(__userAddonSelected);
     return;
-    // console.log(price);
-    // addonSelected, setAddonSelected
-    // addonWithPrice, setAddonWithPrice
-    // console.log(optkey);
+  }
 
-    let __addonSelected = [...addonSelected];
-    let foundIndex = __addonSelected.findIndex(__id => __id == id);
+  const clearAddon_Fn = (optkey) => {
+    let __userAddonSelected = [...userAddonSelected];
+    let addonByOptkey = __userAddonSelected.filter(a => (a.optkey == optkey));
 
-    let __addonWithPrice = [...addonWithPrice];
-
-    if(foundIndex === -1 ) {
-      setAddonSelected([...__addonSelected, id]);
-      setAddonWithPrice([...__addonWithPrice, { id, price }])
-    } else {
-      __addonSelected.splice(foundIndex, 1);
-      setAddonSelected(__addonSelected);
-
-      __addonWithPrice.splice(foundIndex, 1);
-      setAddonWithPrice(__addonWithPrice)
+    if(addonByOptkey.length > 0) {
+      addonByOptkey.forEach(item => {
+        let __fIndex = __userAddonSelected.findIndex(a => (a.id == item.id && a.optkey == item.optkey));
+        __userAddonSelected.splice(__fIndex, 1);
+      })
     }
+
+    setUserAddonSelected(__userAddonSelected);
   }
     
   const value = {
@@ -224,6 +218,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
     onAddToCart_Fn,
     onPushAddonToCache_Fn,
     onAddonSelected_Fn,
+    clearAddon_Fn,
   }
 
   return <ProductBuilderContext.Provider value={ value } >

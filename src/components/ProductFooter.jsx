@@ -5,7 +5,7 @@ import { toPrice } from '../libs/helpers';
 export default function ProductFooter() {
   const { variantObjectCurrent, addToCartEnable, shopifyProductObject, onAddToCart_Fn, addonWithPrice, userAddonSelected } = useProductBuilderContext();
   return <div className="product-builder__product-footer">
-    <div className="product-builder__product-price">
+    <div className="product-builder__product-price"> 
       {/* { toPrice(variantObjectCurrent.price) } */}
       {/* { JSON.stringify(variantObjectCurrent) } */}
       {/* { JSON.stringify(addonWithPrice) } */}

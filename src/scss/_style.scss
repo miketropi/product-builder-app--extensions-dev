@@ -177,6 +177,26 @@
 
   &__addon {
 
+    .__clear-addon {
+      width: calc(33% - 0.5em);
+      border: solid 1px #DDDEDE;
+      padding: 0.5em;
+      border-radius: 3px;
+      margin-bottom: 1em;
+      line-height: normal;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+      color: black;
+      cursor: pointer;
+
+      &.__selected {
+        background: black;
+        color: white;
+        border-color: black;
+      }
+    }
   }
 
   &__addon-item {
