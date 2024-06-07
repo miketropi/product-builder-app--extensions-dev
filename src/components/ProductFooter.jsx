@@ -3,7 +3,14 @@ import ButtonAddToCart from "./ButtonAddToCart";
 import { toPrice } from '../libs/helpers';
 
 export default function ProductFooter() {
-  const { variantObjectCurrent, addToCartEnable, shopifyProductObject, onAddToCart_Fn, addonWithPrice, userAddonSelected } = useProductBuilderContext();
+  const { 
+    variantObjectCurrent, 
+    addToCartEnable, 
+    shopifyProductObject, 
+    onAddToCart_Fn, 
+    addonWithPrice, 
+    userAddonSelected,
+    optionsSelected } = useProductBuilderContext();
   return <div className="product-builder__product-footer">
     <div className="product-builder__product-price"> 
       {/* { toPrice(variantObjectCurrent.price) } */}
@@ -22,6 +29,7 @@ export default function ProductFooter() {
     </div>
     <div className="product-builder__buttons">
       {/* { JSON.stringify(userAddonSelected) }  */}
+      {/* { JSON.stringify(optionsSelected) } */}
       <ButtonAddToCart disable={ !addToCartEnable } onClick={ e => onAddToCart_Fn() } />
     </div>
   </div>

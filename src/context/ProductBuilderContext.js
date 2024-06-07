@@ -155,22 +155,23 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   }, [addOnCaching]);
 
 
-  const onAddonSelected_Fn = (id, price, optkey) => { 
+  const onAddonSelected_Fn = (id, price, optkey, title, multiple) => { 
     // userAddonSelected, setUserAddonSelected
     let __userAddonSelected = [...userAddonSelected];
     let __foundIndex = __userAddonSelected.findIndex(a => (a.id == id && a.optkey == optkey));
-
-    if(__foundIndex == -1) {
+    console.log(multiple);
+    if(__foundIndex == -1) { 
       // add if not found
-      if(__ADDON_MULTIPLE_SUPPORT) {
-        __userAddonSelected.push({ id, price, optkey });
+      if(multiple) {
+        __userAddonSelected.push({ id, price, optkey, title });
       } else {
         let __foundOptkeyItemIndex = __userAddonSelected.findIndex(a => (a.optkey == optkey));
         if(__foundOptkeyItemIndex == -1) {
-          __userAddonSelected.push({ id, price, optkey });
+          __userAddonSelected.push({ id, price, optkey, title });
         } else {
           __userAddonSelected[__foundOptkeyItemIndex].id = id;
           __userAddonSelected[__foundOptkeyItemIndex].price = price;
+          __userAddonSelected[__foundOptkeyItemIndex].title = title;
         }
       }
       

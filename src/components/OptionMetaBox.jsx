@@ -31,6 +31,7 @@ export default function OptionMetaBox({ boxOption, indexNum, onSelect, value, to
 
   const __ADDON_TEMP = (
     <div className="__box-option__addon">
+      {/* { JSON.stringify(boxOption.addon_multiple) } */}
       <div className={ ['__clear-addon', (() => {
         let _found = userAddonSelected.find(a => a.optkey == boxOption.__key);
         return (_found ? '' : '__selected')
@@ -48,8 +49,14 @@ export default function OptionMetaBox({ boxOption, indexNum, onSelect, value, to
                 products.length > 0 && 
                 products.map((__p) => { // #product
                   return __p.variants.map((__v) => { // #variant
-                    const { id } = __v;
-                    return <ProductCard optkey={ boxOption.__key }  key={ id } product={ __v } parent={ __p } />
+                    const { id, displayName } = __v;
+                    return <ProductCard 
+                      optkey={ boxOption.__key } 
+                      multiple={ boxOption?.addon_multiple ?? false }  
+                      name={ displayName }  
+                      key={ id } 
+                      product={ __v } 
+                      parent={ __p } />
                   })
                 })
               }
@@ -63,10 +70,33 @@ export default function OptionMetaBox({ boxOption, indexNum, onSelect, value, to
   return <div className="__box-option">
     <div className="__box-option__heading">
       <BoxNumber number={ indexNum } active={ (value ? true : false)  } />
-      <h4 onClick={ toggleTargetClick }>{ name }</h4>
+      <h4 onClick={ toggleTargetClick }>
+        { name }
+        {/* { boxOption.type == 'addon' && boxOption?.addon_multiple == true ? <sup>multiple selection</sup> : '' } */}
+      </h4>
       {
-        value && <span className="__value">{ value }</span>
+        // value && <span className="__value">{ value }</span>
       }
+      {
+        // userAddonSelected
+        ((__type) => {
+          if(__type == 'options') {
+            return (value && <span className="__value" title={ value }>{ value }</span>)
+          } else {
+            let found = userAddonSelected.filter(s => s.optkey == boxOption.__key)
+            if(found.length == 0) {
+              return <span className="__value">No item</span>
+            } else {
+              let __string = found.map(s => s.title.replace('- Default Title', '') ).join(', ');
+              return <span className="__value" title={ __string }>
+                { found.length > 1 ? `${ found.length } items - ` : '' } { __string }
+                </span>
+            }
+            // return JSON.stringify(found);
+          }
+        })(type)
+      }
+      {/* { JSON.stringify(userAddonSelected) } */}
     </div>
     {
       toggle && 
