@@ -14,7 +14,39 @@ export default function ProductBuilderApp() {
     optionsAvailable } = useProductBuilderContext();
 
   const loadingTemplate = (
-    <div>Loading...</div>
+    <div className="product-builder-container __skeleton-container">
+      <div className="product-builder__product-image">
+        <img style={{ maxWidth: '100%' }} src={ window.__P_fimage } />
+      </div>
+      <div className="product-builder__product-meta">
+        <div className="product-builder__product-heading">
+          <h2>{ window.__P_title }</h2>
+          <p dangerouslySetInnerHTML={{__html: window.__P_content}} ></p>
+        </div>
+
+        <div className="__variant-options __box-option">
+          <div className="__box-option__heading">
+            <span className="__box-number">1</span><h4><div className="__skeleton-line skeleton-box" style={{ width: '20%' }}></div></h4>
+          </div>
+        </div>
+
+        <div className="__variant-options __box-option">
+          <div className="__box-option__heading">
+            <span className="__box-number">2</span><h4><div className="__skeleton-line skeleton-box" style={{ width: '30%' }}></div></h4>
+          </div>
+        </div>
+
+        <div className="__variant-options __box-option">
+          <div className="__box-option__heading">
+            <span className="__box-number">3</span><h4><div className="__skeleton-line skeleton-box" style={{ width: '20%' }}></div></h4>
+          </div>
+        </div>
+
+
+        <div className="__skeleton-line skeleton-box" style={{ width: '30%', marginTop: '3em' }}></div>
+        <div className="__skeleton-heading-line skeleton-box" style={{ marginBottom: '2em' }}></div>
+      </div>
+    </div>
   )
 
   const productBuilderTemplate = (

@@ -159,7 +159,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
     // userAddonSelected, setUserAddonSelected
     let __userAddonSelected = [...userAddonSelected];
     let __foundIndex = __userAddonSelected.findIndex(a => (a.id == id && a.optkey == optkey));
-    console.log(multiple);
+    // console.log(multiple);
     if(__foundIndex == -1) { 
       // add if not found
       if(multiple) {
@@ -173,6 +173,9 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
           __userAddonSelected[__foundOptkeyItemIndex].price = price;
           __userAddonSelected[__foundOptkeyItemIndex].title = title;
         }
+        
+        const __next = currentStepNumber + 1
+        setCurrentStepNumber(__next)
       }
       
     } else {
