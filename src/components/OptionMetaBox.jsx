@@ -49,8 +49,12 @@ const styles = useSpring({
       {/* { JSON.stringify(boxOption.addon_multiple) } */}
       <div className={ ['__clear-addon', (() => {
         let _found = userAddonSelected.find(a => a.optkey == boxOption.__key);
-        return (_found ? '' : '__selected')
-      })()].join(' ') } onClick={ e => clearAddon_Fn(boxOption.__key) }>
+        return ''; // (_found ? '' : '__selected')
+      })()].join(' ') } onClick={ e => {
+        clearAddon_Fn(boxOption.__key);
+        const __next = currentStepNumber + 1
+        setCurrentStepNumber(__next)
+      } }>
         None
       </div>
       {
@@ -138,9 +142,15 @@ const styles = useSpring({
       </animated.div>
       
       {
-        type == 'addon' && toggle == true &&
+        type == 'addon' && 
+        toggle == true && 
+        (boxOption?.addon_multiple && boxOption.addon_multiple == true) && 
+        (() => {
+          let found = userAddonSelected.filter(s => s.optkey == boxOption.__key);
+          return (found.length > 0 ? true : false);
+        })() &&
         <button 
-          className="button __next-step" 
+          className="button __next-step"  
           type="button" 
           onClick={ e => {
           e.preventDefault();
