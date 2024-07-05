@@ -226,7 +226,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   }
 
   return <ProductBuilderContext.Provider value={ value } >
-    {/* { JSON.stringify(addOnCaching) } */}
+    {/* { console.log(optionsSelected) } */}
     { children } 
   </ProductBuilderContext.Provider>   
 }

@@ -5,8 +5,8 @@ import ProductBuilderApp from './components/ProductBuilderApp';
 import { MenuBuilderContext_Provider } from './context/MenuBuilderContext';
 import MenuBuilderApp from './components/menu-builder/MenuBuilderApp';
 
-const ENDPOINT = 'https://buildmat-app-api.fly.dev/api/';
-const API_KEY = 'API-ceab35274bec67420ab7f572d7288daa81a4e455';
+const ENDPOINT = process.env.MIX_ENDPOINT;
+const API_KEY = process.env.MIX_API_KEY;
 
 ((w) => {
   'use strict';
