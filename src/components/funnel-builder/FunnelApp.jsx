@@ -1,5 +1,26 @@
+import { useFunnelBuilderContext } from '../../context/FunnelBuilderContext';
+import Question from './Question';
+
 export default function FunnelApp() {
-  return <div>
-    Hello...!
+  const { initLoading, funnelData } = useFunnelBuilderContext();
+  
+  return <div className="funnel-app-container">
+    {
+      (() => {
+        if(initLoading == true) {
+          return <div className="__loading">Loading...!</div>
+        }
+        
+        const { questions } = funnelData;
+        return <div className="question-container">
+          {
+            questions.map((q) => {
+              const { __key } = q;
+              return <Question key={ __key } q={ q } />
+            })
+          }
+        </div>
+      })()
+    }
   </div>
 }

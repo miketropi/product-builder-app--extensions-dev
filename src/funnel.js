@@ -12,8 +12,11 @@ const API_KEY = process.env.MIX_API_KEY;
     const $el = document.getElementById('__FUNNEL_BUILDER_APP__');
     if(!$el) return;
 
+    const { storeId, funnelId } = $el.dataset;
+    const atts = { storeId, funnelId, ENDPOINT, API_KEY };
+
     const root = createRoot($el);
-    root.render(<FunnelBuilderContextProvider>
+    root.render(<FunnelBuilderContextProvider { ...atts }>
       <FunnelApp />
     </FunnelBuilderContextProvider>);
   }
