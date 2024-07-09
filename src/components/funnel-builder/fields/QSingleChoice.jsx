@@ -1,22 +1,22 @@
 import CheckboxUI from '../CheckboxUI';
+import SelectBox from '../SelectBox';
 
 export default function QSingleChoice({ field }) {
-  const { __key, help_text, value, option_ui, options, require } = field;
+  const { __key, help_text, value, option_ui, options, require, onChange } = field;
 
   const optionTemplate = {
     default: () => {
       return <div className={ ['__options', `__o_ui-${ option_ui }`].join(' ') }>
-        <ul className="__o-list">
-          {
-            options.map((o) => {
-              console.log(o)
-              const { __key, label, value } = o;
-              return <li className="__o-item" key={ __key }>
-                <CheckboxUI label={ label } checked={ false } onChange={ e => {} } />
-              </li>
-            })
-          }
-        </ul>
+        <SelectBox 
+          options={ options } 
+          multiple={ false }
+          value={ value }
+          onChange={ onChange }
+          template={ option_ui }
+        />
+        {
+          help_text ? <small dangerouslySetInnerHTML={{ __html: help_text }}></small> : ''
+        }
       </div>
     } 
   }

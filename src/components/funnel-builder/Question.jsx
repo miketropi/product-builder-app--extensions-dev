@@ -10,7 +10,9 @@ export default function Question({ q, onAnswer, onNext }) {
     }
     {
       field && <div className="question-field">
-        <DynamicField { ...field } />
+        <DynamicField { ...field } onChange={ v => {
+          console.log(v);
+        } } />
       </div>
     }
   </div>
