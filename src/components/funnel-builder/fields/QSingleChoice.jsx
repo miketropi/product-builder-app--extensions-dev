@@ -1,9 +1,8 @@
-import CheckboxUI from '../CheckboxUI';
 import SelectBox from '../SelectBox';
 
 export default function QSingleChoice({ field }) {
   const { __key, help_text, value, option_ui, options, require, onChange } = field;
-
+  
   const optionTemplate = {
     default: () => {
       return <div className={ ['__options', `__o_ui-${ option_ui }`].join(' ') }>

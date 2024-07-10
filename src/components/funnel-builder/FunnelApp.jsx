@@ -13,10 +13,16 @@ export default function FunnelApp() {
         
         const { questions } = funnelData;
         return <div className="question-container">
-          { JSON.stringify(funnelFieldData) }
+          <div>Edges</div>
+          <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelData?.funnel_connectors?.edges, null, "\t") }}></pre>
+          <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelData?.funnel_connectors?.nodes, null, "\t") }}></pre>
+          <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelFieldData, null, "\t") }}></pre>
+          
           {
             questions.map((q) => {
               const { __key } = q;
+              q.value = funnelFieldData.find(f => f.__key === __key)?.value;
+              
               return <Question key={ __key } q={ q } />
             })
           }
