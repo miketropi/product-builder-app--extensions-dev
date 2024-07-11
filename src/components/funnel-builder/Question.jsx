@@ -9,7 +9,7 @@ const __NEXT_ICON = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.o
 
 export default function Question({ q }) { 
   const { historyPassedSteps, questionCurrentViewID, fn } = useFunnelBuilderContext();
-  const { onUpdateFunnelField, canNextStep, onNextStep } = fn;
+  const { onUpdateFunnelField, canNextStep, onNextStep, canPrevStep, onPrevStep } = fn;
   const [ref, { width }] = useMeasure();
   const { __key, question, content, field } = q;
   const { required } = field;
@@ -21,7 +21,6 @@ export default function Question({ q }) {
       <animated.div style={props}>
         <div  className="question-frame">
           <h4 className="question-text">{ question }</h4>
-          <p>{ __key }</p>
           {
             content && 
             <div 
@@ -40,11 +39,15 @@ export default function Question({ q }) {
           }
 
           <div className="action-buttons">
-            <div className="__prev __action __disable">
+            <div 
+              onClick={ onPrevStep } 
+              className={ ['__prev __action', canPrevStep() ? '' : '__disable'].join(' ') }>
               <span className="__icon" dangerouslySetInnerHTML={{ __html: __PREV_ICON }}></span>
               Previous
             </div>
-            <div onClick={ onNextStep } className={ ['__next __action', canNextStep() ? '' : '__disable'].join(' ') }>
+            <div 
+              onClick={ onNextStep } 
+              className={ ['__next __action', canNextStep() ? '' : '__disable'].join(' ') }>
               Next 
               <span className="__icon" dangerouslySetInnerHTML={{ __html: __NEXT_ICON }}></span>
             </div>

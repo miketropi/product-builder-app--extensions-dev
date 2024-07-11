@@ -49,6 +49,12 @@ const FunnelBuilderContextProvider = (props) => {
     return found?.type;
   }
 
+  const getNodeItem = (nodeID) => {
+    const nodes = funnelData?.funnel_connectors?.nodes;
+    const node = nodes.find(n => n.id == nodeID);
+    return node;
+  }
+
   const onUpdateFunnelField = (qKey, value) => {
     const __funnelFieldData = [...funnelFieldData];
     let __found = __funnelFieldData.findIndex(f => f.__key == qKey);
@@ -65,36 +71,58 @@ const FunnelBuilderContextProvider = (props) => {
   }
 
   const onNextStep = () => {
-    const found = funnelFieldData.find(f => f.__key == questionCurrentViewID);
-    const type = onCheckTypeFunnel(found?.__key);
-
-    const actionByType = {
-      QuestionNode: () => {
+    nodeActionController(questionCurrentViewID, {
+      QuestionNode: (node) => {
+        const found = funnelFieldData.find(f => f.__key == questionCurrentViewID);
         const { __key, value, required } = found;
         const edge = findNextStep(__key, value);
         setQuestionCurrentViewID(edge?.target);
-      },
-      RedirectNode: () => {
-        console.log(found);
+        setHistoryPassedSteps([...historyPassedSteps, questionCurrentViewID])
+      }, 
+      RedirectNode: (node) => {
+        // ???
       }
-    }
+    })
 
-    actionByType[type]();
   }
 
   const onPrevStep = () => {
-
+    let __historyPassedSteps = [...historyPassedSteps];
+    const lastID = __historyPassedSteps.pop();
+    setQuestionCurrentViewID(lastID);
+    setHistoryPassedSteps(__historyPassedSteps);
   }
 
-  const canNextStep = () => {
-    // funnelData?.funnel_connectors?.nodes
-    const found = funnelFieldData.find(f => f.__key == questionCurrentViewID);
-    const type = onCheckTypeFunnel(found?.__key);
+  const nodeActionController = useCallback((nodeID, handleType) => {
+    const node = getNodeItem(nodeID); // node type
+    if(handleType[node.type]) {
+      return handleType[node.type](node);
+    } else {
+      console.error(`Type: ${ node.type } not support!!!`);
+    }
+  })
 
-    if(type != 'QuestionNode') return false;
+  const canNextStep = useCallback(() => {
+    return nodeActionController(questionCurrentViewID, {
+      QuestionNode: (node) => {
+        const { id } = node;
+        const found = funnelFieldData.find(f => f.__key == id);
+        if(found.required == true && found.value == '') { return false; } 
+        else { return true; }
+      },
+      RedirectNode: (node) => {
+        console.log(node?.data);
+        return false;
+      }
+    })
+  })
 
-    if(found.required == true && found.value == '') { return false; } 
-    else { return true; }
+  const canPrevStep = () => {
+    if(historyPassedSteps.length > 0) {
+      return true;
+    }
+
+    return false;
   }
 
   const value = {
@@ -108,6 +136,7 @@ const FunnelBuilderContextProvider = (props) => {
       onNextStep,
       onPrevStep,
       canNextStep,
+      canPrevStep,
     }
   }
 

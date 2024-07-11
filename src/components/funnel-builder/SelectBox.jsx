@@ -1,6 +1,28 @@
 import { useState, useEffect, useCallback } from 'react';
 import CheckboxUI from './CheckboxUI';
 
+const CardItem = ({ title, desc, image, onClick, selected }) => {
+  return <div 
+    className={ ['card-item-comp', (selected ? '__selected' : '')].join(' ') } 
+    onClick={ onClick }>
+    {
+      selected ? <span className="__tag-selected">Selected</span> : ''
+    }
+    <img src={ image } alt={ title } />
+    <h4>{ title }</h4>
+    <p dangerouslySetInnerHTML={{ __html: desc }}></p>
+  </div>
+}
+
+const BlockItem = ({ title, image, onClick, selected }) => {
+  return <div
+    className={ ['block-item-comp', (selected ? '__selected' : '')].join(' ') } 
+    onClick={ onClick }>
+    <img src={ image } alt={ title } />
+    <h4>{ title }</h4>
+  </div>
+}
+
 export default function SelectBox({ options, multiple, value, onChange, template }) {
   const [ __value, set__Value ] = useState([]);
 
@@ -28,20 +50,73 @@ export default function SelectBox({ options, multiple, value, onChange, template
     onChange(multiple ? __newValue : __newValue.join(','));
   }
 
-  return <div className="select-box-component">
-    {
-      options.map((o) => {
-        const { __key, label } = o;
-        const selected = isSelected_Fn(o.value);
+  const __templates = {
+    default: () => {
+      return <>
+        {
+          options.map((o) => {
+            const { __key, label } = o;
+            const selected = isSelected_Fn(o.value);
 
-        return <li className="__o-item" key={ __key }>
-          <CheckboxUI 
-            label={ label } 
-            checked={ selected } 
-            onChange={ v => { onChange_Fn(v, o.value) } } 
-          />
-        </li>
-      })
+            return <li className="__o-item" key={ __key }>
+              <CheckboxUI 
+                label={ label } 
+                checked={ selected } 
+                onChange={ v => { onChange_Fn(v, o.value) } } 
+              />
+            </li>
+          })
+        }
+      </>
+    },
+    card: () => {
+      return <>
+        {
+          options.map((o) => {
+            const { __key, label, extra__cart_title, extra__cart_desc, extra__cart_image } = o;
+            const selected = isSelected_Fn(o.value);
+
+            return <li className="__card-item" key={ __key }>
+              <CardItem 
+                title={ extra__cart_title } 
+                desc={ extra__cart_desc } 
+                image={ extra__cart_image } 
+                selected={ selected }
+                onClick={ e => {
+                  // console.log(!selected, o.value)
+                  onChange_Fn(!selected, o.value)
+                } } />
+            </li>
+          })
+        }
+      </>
+    },
+    block: () => {
+      return <>
+        {
+          options.map((o) => {
+            const { __key, label, extra__block_text, extra__block_image } = o;
+            const selected = isSelected_Fn(o.value);
+
+            return <li className="__block-item" key={ __key }>
+              {/* { JSON.stringify(o) } */}
+              <BlockItem 
+                title={ extra__block_text } 
+                image={ extra__block_image } 
+                selected={ selected }
+                onClick={ e => {
+                  // console.log(!selected, o.value)
+                  onChange_Fn(!selected, o.value)
+                } } />
+            </li>
+          })
+        }
+      </>
     }
-  </div>
+  }
+
+  return <ul className={ ['select-box-component', `__temp__${ template }`].join(' ') }>
+    {/* { template } */}
+    { __templates[template]() }
+  </ul>
 }
