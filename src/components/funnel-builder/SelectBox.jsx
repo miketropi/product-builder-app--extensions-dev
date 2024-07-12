@@ -17,9 +17,20 @@ const CardItem = ({ title, desc, image, onClick, selected }) => {
 const BlockItem = ({ title, image, onClick, selected }) => {
   return <div
     className={ ['block-item-comp', (selected ? '__selected' : '')].join(' ') } 
-    onClick={ onClick }>
+    onClick={ onClick } >
     <img src={ image } alt={ title } />
     <h4>{ title }</h4>
+  </div>
+}
+
+const ImageItem = ({ title, image, onClick, selected }) => {
+  return <div
+    className={ ['image-item-comp', (selected ? '__selected' : '')].join(' ') } 
+    onClick={ onClick } >
+    {
+      selected ? <span className="__tag-selected">Selected</span> : ''
+    }
+    <img src={ image } alt={ title } />
   </div>
 }
 
@@ -108,6 +119,25 @@ export default function SelectBox({ options, multiple, value, onChange, template
                   // console.log(!selected, o.value)
                   onChange_Fn(!selected, o.value)
                 } } />
+            </li>
+          })
+        }
+      </>
+    },
+    image: () => {
+      return <>
+        {
+          options.map((o) => {
+            const { __key, label, extra__image_url } = o;
+            const selected = isSelected_Fn(o.value);
+
+            return <li className="__image-item" key={ __key }>
+              {/* { JSON.stringify(o) } */}
+              <ImageItem 
+                title={ label }
+                image={ extra__image_url } 
+                selected={ selected } 
+                onClick={ e => onChange_Fn(!selected, o.value) } />
             </li>
           })
         }
