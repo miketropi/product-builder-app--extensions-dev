@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
+import { createContext, useContext, useEffect, useState, useCallback, useRef, useMemo } from "react";
 import FunnelApi from '../libs/FunnelApi';
 
 const FunnelBuilderContext = createContext(null);
@@ -11,6 +11,7 @@ const FunnelBuilderContextProvider = (props) => {
   const [ funnelFieldData, setFunnelFieldData ] = useState([]);
   const [ questionCurrentViewID, setQuestionCurrentViewID ] = useState(null);
   const [ historyPassedSteps, setHistoryPassedSteps ] = useState([]);
+  const [ sectionHeight, setSectionHeight ] = useState(0);
 
   useEffect(() => {
     API.current = new FunnelApi(storeId);
@@ -66,7 +67,7 @@ const FunnelBuilderContextProvider = (props) => {
   const findNextStep = (qKey, handle) => {
     let Edges = funnelData?.funnel_connectors?.edges;
     let found = Edges.find(e => e.source == qKey && e.sourceHandle == handle);
-    console.log(found);
+    // console.log(found);
     return found;
   }
 
@@ -131,6 +132,7 @@ const FunnelBuilderContextProvider = (props) => {
     funnelFieldData, setFunnelFieldData,
     questionCurrentViewID, setQuestionCurrentViewID,
     historyPassedSteps, setHistoryPassedSteps,
+    sectionHeight, setSectionHeight,
     fn: {
       onUpdateFunnelField,
       onNextStep,

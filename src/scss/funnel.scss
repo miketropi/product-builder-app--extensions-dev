@@ -210,6 +210,7 @@
     display: inline-block;
     position: relative;
     border: solid 1px $accent-color;
+    line-height: 0;
 
     &:after {
       content: "";
@@ -239,5 +240,20 @@
         opacity: 1;
       }
     }
+  }
+}
+
+.transition-nodes {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  transition: .1s ease;
+  -webkit-transition: .1s ease;
+
+  .transition-node-item {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
   }
 }

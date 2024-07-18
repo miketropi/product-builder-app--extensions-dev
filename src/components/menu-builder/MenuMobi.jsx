@@ -2,6 +2,21 @@ import { useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useMenuBuilderContext } from "../../context/MenuBuilderContext";
 import MenuIcon from "./MenuIcon";
+import DynamicMenuItem from "./DynamicMenuItem";
+
+const BannerMenuItem = (props) => {
+  const { background_image, custom_url, custom_text, heading } = props;
+  return <div className="banner-menu-item">
+    <div className="__image-layer" style={{ background: `url(${ background_image }) no-repeat center center / cover, #222` }}></div>
+    <div className="__entry-layer">
+      <h4>{ heading }</h4>
+      <a href={ custom_url }>
+        { custom_text } 
+        <MenuIcon source={ 'arrow_next' } />
+      </a>
+    </div>
+  </div>
+}
 
 export default function MenuMobi() {
   const { 
@@ -19,7 +34,7 @@ export default function MenuMobi() {
     document.body.appendChild(wrapEl.current);
   }, [])
 
-  const renderMenuMobi = (menu, lv = null, __parent_item) => {
+  const renderMenuMobi = (menu, lv = 0, __parent_item) => {
     lv = (lv === null) ? 0 : lv += 1;
     let classesUl = (lv == 0 ? ['menu-builder-mobi'] : [
       'menu-builder-mobi__sub', 
@@ -191,9 +206,41 @@ export default function MenuMobi() {
     return __ul
   }
 
+  const renderMenuMobiV2 = (menu, lv = null, __parent_item) => {
+    let ulClasses = [(lv == 0 ? '__root-menu' : ''), '__menu-ul', __parent_item ? '__has-parent' : ''];
+    lv += 1;
+    return <ul className={ ulClasses.join(' ') }>
+      {
+        (() => {
+          if(__parent_item?.type != '__MEGASHOP_SUBITEM__') return;
+          return <BannerMenuItem { ...__parent_item?.config } heading={ __parent_item.name } />
+        })()
+      }
+      {
+        menu.map(m => {
+          const { __key, children } = m;
+          return <DynamicMenuItem 
+            key={ __key } 
+            menu={ m } 
+            parentItem={ __parent_item } 
+            level={ lv } 
+            hasMenuChildren={ (() => {
+              return ((children && children.length > 0) ? true : false);
+            })() }>
+            { 
+              children && children.length && <> 
+                { renderMenuMobiV2(children, lv, m) } 
+              </>
+            }
+          </DynamicMenuItem>
+        })
+      }
+    </ul>
+  }
+
   return <>
     {
-      wrapEl?.current && 
+      wrapEl?.current &&  
       ReactDOM.createPortal(
         <>
           { 
@@ -223,7 +270,8 @@ export default function MenuMobi() {
                 </div>
 
                 <div className="menu-builder-mobi__nav">
-                  { renderMenuMobi(mobiItemsCurrent) }
+                  {/* { renderMenuMobi(mobiItemsCurrent) } */}
+                  { renderMenuMobiV2(mobiMenuData, 0, null) }
                 </div>
               </div>
             </div> 

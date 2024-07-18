@@ -1,4 +1,4 @@
-import { useCallback, Fragment } from "react";
+import { useCallback, Fragment, useEffect } from "react";
 import { useFunnelBuilderContext } from "../../context/FunnelBuilderContext";
 import DynamicField from './fields/DynamicField'
 
@@ -6,10 +6,10 @@ const __PREV_ICON = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.o
 const __NEXT_ICON = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/> </svg>`;
 
 export default function Question({ q }) { 
-  const { historyPassedSteps, questionCurrentViewID, fn } = useFunnelBuilderContext();
+  const { funnelFieldData, historyPassedSteps, questionCurrentViewID, fn } = useFunnelBuilderContext();
   const { onUpdateFunnelField, canNextStep, onNextStep, canPrevStep, onPrevStep } = fn;
   const { __key, question, content, field } = q;
-  const { required } = field;
+  const { required } = field;  
 
   return <>
     <div  className="question-frame">
@@ -23,8 +23,11 @@ export default function Question({ q }) {
       {
         field && 
         <div className="question-field">
+          { funnelFieldData.find(f => f.__key == __key)?.value }
           <DynamicField 
-            { ...field  } 
+            { ...(() => {
+              return { ...field, value: funnelFieldData.find(f => f.__key == __key)?.value }
+            })() } 
             onChange={ v => {
               onUpdateFunnelField(__key, v);
             } } />
