@@ -258,3 +258,31 @@ $menu-border-color: #DADDDE;
   //   }
   // }
 }
+
+.__color-tag-style-container {
+  
+  li.__item-type-__BLOCK_MENU_IMAGE_ITEM__ {
+
+    > a {
+      border: solid 1px #D2D2D2;
+      border-radius: 6px;
+      overflow: hidden;
+
+      .__image-item {
+        margin: 0;
+        width: 100%;
+        border-bottom: solid 1px #D2D2D2;
+      }
+
+      .__name-item {
+        display: block;
+        width: 100%;
+        padding: .6em 4px;
+      }
+    }
+  }
+}
+
+.__menu-item-type__custom-html {
+  list-style: none;
+}

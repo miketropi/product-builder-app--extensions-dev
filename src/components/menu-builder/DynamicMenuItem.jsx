@@ -19,7 +19,8 @@ export default function DynamicMenuItem(props) {
     `__item-key-${ __key }`, 
     `__item-type-${ type }`, 
     (__WITHOUT_ARROW_TYPES.includes(type) ? `__flat-child` : ''), 
-    (open ? '__open' : ''),
+    (open ? '__open' : ''), 
+    menu?.custom_class,
   ];
 
   const arrow = (

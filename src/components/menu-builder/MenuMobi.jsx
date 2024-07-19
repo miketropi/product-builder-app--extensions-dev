@@ -273,6 +273,7 @@ export default function MenuMobi() {
                   {/* { renderMenuMobi(mobiItemsCurrent) } */}
                   { renderMenuMobiV2(mobiMenuData, 0, null) }
                 </div>
+                <div dangerouslySetInnerHTML={{__html: window?.__MENU_BUILDER_MOBI_CUSTOM_HTML_END}}></div>
               </div>
             </div> 
           }

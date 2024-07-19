@@ -593,6 +593,7 @@ li.__menu-item_type____BLOCK_MENU_IMAGE_ITEM__ {
       img {
         width: auto;
         height: 40px;
+        max-width: 100%;
       }
     }
 
@@ -763,5 +764,23 @@ li.__menu-item_type____BLOCK_BRAND__ {
 
   > a {
     display: none !important;
+  }
+}
+
+body .__color-tag-style-container .__menu-item_type____BLOCK_MENU_IMAGE_ITEM__ {
+
+  > a {
+    border: solid 1px #D2D2D2 !important;
+    border-radius: 6px !important;
+    overflow: hidden;
+    padding: 0 !important;
+
+    .__image {
+      margin: 0 !important;
+    }
+
+    .__menu-item-name {
+      padding: 10px 4px !important;
+    }
   }
 }

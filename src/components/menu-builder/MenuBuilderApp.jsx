@@ -42,6 +42,7 @@ export default function MenuBuilderApp() {
               size,
               (children && children.length > 0 ? `__has-children` : ''),
               (item.type ? `__menu-item_type__${ type }` : ''),
+              item?.custom_class,
             ];
 
             return <li className={ liClasses.join(' ') } key={ __key } data-id={ __key }>
@@ -95,8 +96,10 @@ export default function MenuBuilderApp() {
           : __li 
       }
       {
-        __parent_item?.type && __parent_item.type == '__MEGASHOP__' && 
-        <li className="__menu-item __menu-item-type__custom-html"></li> 
+        __parent_item?.type && 
+        __parent_item.type == '__MEGASHOP__' && 
+        window?.__MENU_BUILDER_MOBI_CUSTOM_HTML_END &&
+        <div dangerouslySetInnerHTML={{__html: window.__MENU_BUILDER_MOBI_CUSTOM_HTML_END}}></div>
       }
     </ul>)
 
