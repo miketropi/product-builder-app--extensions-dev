@@ -52,9 +52,17 @@ export default function DynamicMenuItem(props) {
     </>
   )
 
+  let customEventClick = {};
+  if(level == 1 && hasMenuChildren == true) {
+    customEventClick.onClick = e => {
+      e.preventDefault();
+      setOpen(!open);
+    }
+  }
+
   return <li className={ liClasses.join(' ') }>
     {/* { JSON.stringify(menu) } */}
-    <a href={ url }>
+    <a href={ url } { ...customEventClick } >
       {/* { JSON.stringify(menu?.image) } */}
       { image }
       <span className="__name-item">{ name }</span>

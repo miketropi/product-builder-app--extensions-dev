@@ -42,7 +42,7 @@ export default function MenuBuilderApp() {
               size,
               (children && children.length > 0 ? `__has-children` : ''),
               (item.type ? `__menu-item_type__${ type }` : ''),
-              item?.custom_class,
+              item?.custom_class, 
             ];
 
             return <li className={ liClasses.join(' ') } key={ __key } data-id={ __key }>
