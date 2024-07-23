@@ -23,7 +23,7 @@ export default function Question({ q }) {
       {
         field && 
         <div className="question-field">
-          { funnelFieldData.find(f => f.__key == __key)?.value }
+          {/* { funnelFieldData.find(f => f.__key == __key)?.value } */}
           <DynamicField 
             { ...(() => {
               return { ...field, value: funnelFieldData.find(f => f.__key == __key)?.value }

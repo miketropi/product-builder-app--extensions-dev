@@ -12,6 +12,7 @@ const FunnelBuilderContextProvider = (props) => {
   const [ questionCurrentViewID, setQuestionCurrentViewID ] = useState(null);
   const [ historyPassedSteps, setHistoryPassedSteps ] = useState([]);
   const [ sectionHeight, setSectionHeight ] = useState(0);
+  const [ effectDirection, setEffectDirection ] = useState('__NEXT__')
 
   useEffect(() => {
     API.current = new FunnelApi(storeId);
@@ -65,18 +66,25 @@ const FunnelBuilderContextProvider = (props) => {
   }
 
   const findNextStep = (qKey, handle) => {
+    // console.log(qKey, handle); return;
     let Edges = funnelData?.funnel_connectors?.edges;
     let found = Edges.find(e => e.source == qKey && e.sourceHandle == handle);
+    let foundOnlySource = Edges.find(e => e.source == qKey);
     // console.log(found);
-    return found;
+    return found ? found : foundOnlySource;
   }
 
   const onNextStep = () => {
+    setEffectDirection('__NEXT__');
+    // console.log(questionCurrentViewID); return;
+    // console.log(questionCurrentViewID); return;
+
     nodeActionController(questionCurrentViewID, {
       QuestionNode: (node) => {
         const found = funnelFieldData.find(f => f.__key == questionCurrentViewID);
         const { __key, value, required } = found;
         const edge = findNextStep(__key, value);
+        // console.log(edge); return;
         setQuestionCurrentViewID(edge?.target);
         setHistoryPassedSteps([...historyPassedSteps, questionCurrentViewID])
       }, 
@@ -88,22 +96,26 @@ const FunnelBuilderContextProvider = (props) => {
   }
 
   const onPrevStep = () => {
+    setEffectDirection('__PRIV__');
+
     let __historyPassedSteps = [...historyPassedSteps];
     const lastID = __historyPassedSteps.pop();
     setQuestionCurrentViewID(lastID);
     setHistoryPassedSteps(__historyPassedSteps);
   }
 
-  const nodeActionController = useCallback((nodeID, handleType) => {
+  const nodeActionController = (nodeID, handleType) => {
+    // console.log(nodeID, handleType)
     const node = getNodeItem(nodeID); // node type
-    if(handleType[node.type]) {
-      return handleType[node.type](node);
-    } else {
-      console.error(`Type: ${ node.type } not support!!!`);
-    }
-  })
 
-  const canNextStep = useCallback(() => {
+    if(handleType[node?.type]) {
+      return handleType[node?.type](node);
+    } else {
+      console.error(`Type: ${ node?.type } not support!!!`);
+    }
+  }
+
+  const canNextStep = () => {
     return nodeActionController(questionCurrentViewID, {
       QuestionNode: (node) => {
         const { id } = node;
@@ -112,11 +124,11 @@ const FunnelBuilderContextProvider = (props) => {
         else { return true; }
       },
       RedirectNode: (node) => {
-        console.log(node?.data);
+        // console.log(node?.data);
         return false;
       }
     })
-  })
+  }
 
   const canPrevStep = () => {
     if(historyPassedSteps.length > 0) {
@@ -133,6 +145,7 @@ const FunnelBuilderContextProvider = (props) => {
     questionCurrentViewID, setQuestionCurrentViewID,
     historyPassedSteps, setHistoryPassedSteps,
     sectionHeight, setSectionHeight,
+    effectDirection, setEffectDirection,
     fn: {
       onUpdateFunnelField,
       onNextStep,

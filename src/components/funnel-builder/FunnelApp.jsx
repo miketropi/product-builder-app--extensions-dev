@@ -3,24 +3,35 @@ import { useFunnelBuilderContext } from '../../context/FunnelBuilderContext';
 import NodePanel from './NodePanel';
 import Question from './Question';
 import { animated, useTransition, useSpringRef } from '@react-spring/web';
+import RedirectNode from './RedirectNode';
 
 const TransitionNodes = (props) => {
-  const { funnelData, funnelFieldData, questionCurrentViewID, historyPassedSteps, sectionHeight } = useFunnelBuilderContext();
+  const { 
+    funnelData, 
+    funnelFieldData, 
+    questionCurrentViewID, 
+    historyPassedSteps, 
+    sectionHeight, 
+    effectDirection } = useFunnelBuilderContext();
   const { nodes } = props;
   const { questions } = funnelData;
   const [ currentViewIndex, setCurrentViewIndex ] = useState(0);
   const transRef = useSpringRef()
 
   useEffect(() => {
-    let __index = nodes.findIndex(n => (n.id == questionCurrentViewID));
-    setCurrentViewIndex(__index)
+    let __index = nodes.findIndex(n => (n.id == questionCurrentViewID)); 
+    setCurrentViewIndex(__index) 
   }, [questionCurrentViewID]);
+  
+  const from = effectDirection == '__NEXT__' ? { opacity: 0, transform: 'translate3d(50%,0,0)' } : { opacity: 0, transform: 'translate3d(-50%,0,0)' };
+  const enter = effectDirection == '__NEXT__' ? { opacity: 1, transform: 'translate3d(0%,0,0)' } : { opacity: 1, transform: 'translate3d(0%,0,0)' };
+  const leave = effectDirection == '__NEXT__' ? { opacity: 0, transform: 'translate3d(-50%,0,0)' } : { opacity: 0, transform: 'translate3d(50%,0,0)' };
 
   const transitions = useTransition(currentViewIndex, {
     // ref: transRef,
-    from: { opacity: 0, transform: 'translate3d(100%,0,0)' },
-    enter: { opacity: 1, transform: 'translate3d(0%,0,0)' },
-    leave: { opacity: 0, transform: 'translate3d(-50%,0,0)' },
+    from,
+    enter,
+    leave, 
   });
 
   return <div className="transition-nodes" style={{ minHeight: `${ sectionHeight }px` }}>
@@ -37,7 +48,8 @@ const TransitionNodes = (props) => {
           },
           RedirectNode: () => {
             return <>
-              { JSON.stringify(data) }
+              {/* { JSON.stringify(data) } */}
+              <RedirectNode nodeData={ data } />
             </>
           }
         }
@@ -45,7 +57,6 @@ const TransitionNodes = (props) => {
         return <div className="transition-node-item">
           <NodePanel key={ id } node={ n } style={ style }>
             { __childrenByType[type](n) }
-            {/* Hello { id } */}
           </NodePanel>
         </div>
       })
@@ -69,30 +80,10 @@ export default function FunnelApp() {
           {/* <div>Edges</div>
           <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelData?.funnel_connectors?.edges, null, "\t") }}></pre>
           <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelData?.funnel_connectors?.nodes, null, "\t") }}></pre> */}
-          <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelFieldData, null, "\t") }}></pre>
+          {/* <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelFieldData, null, "\t") }}></pre> */}
+          {/* <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelData, null, "\t") }}></pre> */}
           
           <TransitionNodes nodes={ nodes } />
-          {/* {
-            nodes.map(n => {
-              const { id, data, type } = n;
-              const __childrenByType = {
-                StartNode: () => <>Start...!</>,
-                QuestionNode: () => {
-                  const { question_key } = data;
-                  const q = questions.find(_q => _q.__key === question_key);
-                  return <Question key={ q.__key } q={ q } />
-                },
-                RedirectNode: () => {
-                  return <>
-                    { JSON.stringify(data) }
-                  </>
-                }
-              }
-              return <NodePanel key={ id } node={ n }>
-                { __childrenByType[type](n) }
-              </NodePanel>
-            })
-          } */}
         </div> 
       })()
     }
