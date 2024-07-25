@@ -11,6 +11,14 @@ export default function Question({ q }) {
   const { __key, question, content, field } = q;
   const { required } = field;  
 
+  useEffect(() => {
+    // if(questionCurrentViewID != __key) return;
+
+    // if(['QSingleChoice'].includes(field?.type)) {
+    //   if(canNextStep()) { onNextStep() }
+    // } 
+  }, [funnelFieldData])
+
   return <>
     <div  className="question-frame">
       <h4 className="question-text">{ question }</h4>
@@ -29,12 +37,16 @@ export default function Question({ q }) {
               return { ...field, value: funnelFieldData.find(f => f.__key == __key)?.value }
             })() } 
             onChange={ v => {
-              onUpdateFunnelField(__key, v);
+              onUpdateFunnelField(__key, v, (__k, __v) => {
+                if(__v && ['QSingleChoice'].includes(field?.type)) {
+                  onNextStep();
+                } 
+              });
             } } />
         </div>
       }
 
-      <div className="action-buttons">
+      {/* <div className="action-buttons">
         <div 
           onClick={ onPrevStep } 
           className={ ['__prev __action', canPrevStep() ? '' : '__disable'].join(' ') }>
@@ -47,7 +59,7 @@ export default function Question({ q }) {
           Next 
           <span className="__icon" dangerouslySetInnerHTML={{ __html: __NEXT_ICON }}></span>
         </div>
-      </div>
+      </div> */}
     </div>
   </>
 }

@@ -57,12 +57,14 @@ const FunnelBuilderContextProvider = (props) => {
     return node;
   }
 
-  const onUpdateFunnelField = (qKey, value) => {
+  const onUpdateFunnelField = (qKey, value, cb) => {
     const __funnelFieldData = [...funnelFieldData];
     let __found = __funnelFieldData.findIndex(f => f.__key == qKey);
 
     __funnelFieldData[__found] = { ...__funnelFieldData[__found], value: value }
     setFunnelFieldData(__funnelFieldData);
+
+    if(cb) cb.call(qKey, value, __funnelFieldData)
   }
 
   const findNextStep = (qKey, handle) => {
