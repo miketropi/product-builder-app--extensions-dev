@@ -1,4 +1,4 @@
-import { useCallback, Fragment, useEffect } from "react";
+import { useCallback, Fragment, useEffect, useState } from "react";
 import { useFunnelBuilderContext } from "../../context/FunnelBuilderContext";
 import DynamicField from './fields/DynamicField'
 
@@ -10,6 +10,13 @@ export default function Question({ q }) {
   const { onUpdateFunnelField, canNextStep, onNextStep, canPrevStep, onPrevStep } = fn;
   const { __key, question, content, field } = q;
   const { required } = field;  
+  const [ __value, set__Value ] = useState('');
+
+  useEffect(() => {
+    if(__value && ['QSingleChoice'].includes(field?.type)) {
+      onNextStep();
+    } 
+  }, [__value]); 
 
   useEffect(() => {
     // if(questionCurrentViewID != __key) return;
@@ -37,16 +44,13 @@ export default function Question({ q }) {
               return { ...field, value: funnelFieldData.find(f => f.__key == __key)?.value }
             })() } 
             onChange={ v => {
-              onUpdateFunnelField(__key, v, (__k, __v) => {
-                if(__v && ['QSingleChoice'].includes(field?.type)) {
-                  onNextStep();
-                } 
-              });
+              onUpdateFunnelField(__key, v);
+              set__Value(v);
             } } />
         </div>
       }
 
-      {/* <div className="action-buttons">
+      <div className="action-buttons">
         <div 
           onClick={ onPrevStep } 
           className={ ['__prev __action', canPrevStep() ? '' : '__disable'].join(' ') }>
@@ -59,7 +63,7 @@ export default function Question({ q }) {
           Next 
           <span className="__icon" dangerouslySetInnerHTML={{ __html: __NEXT_ICON }}></span>
         </div>
-      </div> */}
+      </div>
     </div>
   </>
 }

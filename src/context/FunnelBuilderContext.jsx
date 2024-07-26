@@ -62,16 +62,22 @@ const FunnelBuilderContextProvider = (props) => {
     let __found = __funnelFieldData.findIndex(f => f.__key == qKey);
 
     __funnelFieldData[__found] = { ...__funnelFieldData[__found], value: value }
-    setFunnelFieldData(__funnelFieldData);
 
-    if(cb) cb.call(qKey, value, __funnelFieldData)
+    setFunnelFieldData(__funnelFieldData);
+    if(cb) cb.call('', qKey, value, __funnelFieldData) 
   }
 
   const findNextStep = (qKey, handle) => {
     // console.log(qKey, handle); return;
     let Edges = funnelData?.funnel_connectors?.edges;
     let found = Edges.find(e => e.source == qKey && e.sourceHandle == handle);
-    let foundOnlySource = Edges.find(e => e.source == qKey);
+    let foundOnlySource = null;
+
+    if(Array.isArray(handle)) {
+      foundOnlySource = Edges.find(e => e.source == qKey); 
+    }
+    
+    // console.log([qKey, handle, found, foundOnlySource]) 
     // console.log(found);
     return found ? found : foundOnlySource;
   }
@@ -81,7 +87,7 @@ const FunnelBuilderContextProvider = (props) => {
     // console.log(questionCurrentViewID); return;
     // console.log(questionCurrentViewID); return;
 
-    nodeActionController(questionCurrentViewID, {
+    nodeActionController(questionCurrentViewID, { 
       QuestionNode: (node) => {
         const found = funnelFieldData.find(f => f.__key == questionCurrentViewID);
         const { __key, value, required } = found;
@@ -93,8 +99,7 @@ const FunnelBuilderContextProvider = (props) => {
       RedirectNode: (node) => {
         // ???
       }
-    })
-
+    }) 
   }
 
   const onPrevStep = () => {

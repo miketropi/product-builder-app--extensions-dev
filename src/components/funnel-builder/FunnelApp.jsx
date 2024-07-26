@@ -77,10 +77,11 @@ export default function FunnelApp() {
         const { questions } = funnelData;
 
         return <div className="question-container">
+          <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelData?.funnel_connectors?.edges, null, "\t") }}></pre>  
           {/* <div>Edges</div>
           <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelData?.funnel_connectors?.edges, null, "\t") }}></pre>
           <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelData?.funnel_connectors?.nodes, null, "\t") }}></pre> */}
-          {/* <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelFieldData, null, "\t") }}></pre> */}
+          <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelFieldData, null, "\t") }}></pre>
           {/* <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelData, null, "\t") }}></pre> */}
           
           <TransitionNodes nodes={ nodes } />
