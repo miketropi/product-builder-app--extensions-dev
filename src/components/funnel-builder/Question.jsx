@@ -50,7 +50,7 @@ export default function Question({ q }) {
         </div>
       }
 
-      <div className="action-buttons">
+      {/* <div className="action-buttons">
         <div 
           onClick={ onPrevStep } 
           className={ ['__prev __action', canPrevStep() ? '' : '__disable'].join(' ') }>
@@ -63,7 +63,7 @@ export default function Question({ q }) {
           Next 
           <span className="__icon" dangerouslySetInnerHTML={{ __html: __NEXT_ICON }}></span>
         </div>
-      </div>
+      </div> */}
     </div>
   </>
 }
