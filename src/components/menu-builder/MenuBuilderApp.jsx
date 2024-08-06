@@ -45,8 +45,13 @@ export default function MenuBuilderApp() {
               item?.custom_class, 
             ];
 
+            let linkAttributes = {};
+            if(url) {
+              linkAttributes.href = url;
+            }
+
             return <li className={ liClasses.join(' ') } key={ __key } data-id={ __key }>
-              <a href={ url }>
+              <a { ...linkAttributes } > 
                 { icon ? <MenuIcon source={ icon } /> : '' } 
                 { 
                   ['__BLOCK_BRAND_ITEM__', '__BLOCK_MENU_IMAGE_ITEM__'].includes(type) && item?.image &&

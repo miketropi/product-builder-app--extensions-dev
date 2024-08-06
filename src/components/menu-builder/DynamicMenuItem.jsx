@@ -60,9 +60,14 @@ export default function DynamicMenuItem(props) {
     }
   }
 
+  let linkAttributes = {};
+  if(url) {
+    linkAttributes.href = url;
+  }
+  
   return <li className={ liClasses.join(' ') }>
     {/* { JSON.stringify(menu) } */}
-    <a href={ url } { ...customEventClick } >
+    <a { ...linkAttributes } { ...customEventClick } >
       {/* { JSON.stringify(menu?.image) } */}
       { image }
       <span className="__name-item">{ name }</span>
