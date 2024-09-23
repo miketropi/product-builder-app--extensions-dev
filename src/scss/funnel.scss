@@ -57,6 +57,12 @@
   margin: 0;
   padding: 0;
 
+  li.__disable {
+    opacity: .5 !important;
+    pointer-events: none !important;
+    text-decoration: line-through !important;
+  }
+
   li.__o-item {
     list-style: none;
     margin-bottom: .6em;

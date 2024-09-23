@@ -66,13 +66,13 @@ export default function SelectBox({ options, multiple, value, onChange, template
       return <>
         {
           options.map((o) => {
-            const { __key, label } = o;
+            const { __key, label, disable } = o;
             const selected = isSelected_Fn(o.value);
 
-            return <li className="__o-item" key={ __key }>
+            return <li className={ ['__o-item', (disable == true ? '__disable' : '')].join(' ') } key={ __key }>
               <CheckboxUI 
                 label={ label } 
-                checked={ selected } 
+                checked={ selected }  
                 onChange={ v => { onChange_Fn(v, o.value) } } 
               />
             </li>
@@ -84,10 +84,10 @@ export default function SelectBox({ options, multiple, value, onChange, template
       return <>
         {
           options.map((o) => {
-            const { __key, label, extra__cart_title, extra__cart_desc, extra__cart_image } = o;
+            const { __key, label, disable, extra__cart_title, extra__cart_desc, extra__cart_image } = o;
             const selected = isSelected_Fn(o.value);
 
-            return <li className="__card-item" key={ __key }>
+            return <li className={ ['__card-item', (disable == true ? '__disable' : '')].join(' ') } key={ __key }>
               <CardItem 
                 title={ extra__cart_title } 
                 desc={ extra__cart_desc } 
@@ -106,10 +106,10 @@ export default function SelectBox({ options, multiple, value, onChange, template
       return <>
         {
           options.map((o) => {
-            const { __key, label, extra__block_text, extra__block_image } = o;
+            const { __key, label, disable, extra__block_text, extra__block_image } = o;
             const selected = isSelected_Fn(o.value);
 
-            return <li className="__block-item" key={ __key }>
+            return <li className={ ['__block-item', (disable == true ? '__disable' : '')].join(' ') } key={ __key }>
               {/* { JSON.stringify(o) } */}
               <BlockItem 
                 title={ extra__block_text } 
@@ -128,10 +128,10 @@ export default function SelectBox({ options, multiple, value, onChange, template
       return <>
         {
           options.map((o) => {
-            const { __key, label, extra__image_url } = o;
+            const { __key, label, disable, extra__image_url } = o;
             const selected = isSelected_Fn(o.value);
 
-            return <li className="__image-item" key={ __key }>
+            return <li className={ ['__image-item', (disable == true ? '__disable' : '')].join(' ') } key={ __key }>
               {/* { JSON.stringify(o) } */}
               <ImageItem 
                 title={ label }
