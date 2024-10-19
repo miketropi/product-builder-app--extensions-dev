@@ -37,7 +37,7 @@ const TransitionNodes = (props) => {
   return <div className="transition-nodes" style={{ minHeight: `${ sectionHeight }px` }}>
     {
       transitions((style, i) => {
-        let n = nodes[i];
+        let n = nodes[i]; // console.log(n);
         const { id, data, type } = n;
         const __childrenByType = {
           StartNode: () => <>Start...!</>,
@@ -65,7 +65,7 @@ const TransitionNodes = (props) => {
 }
 
 export default function FunnelApp() {
-  const { initLoading, funnelData, funnelFieldData, historyPassedSteps } = useFunnelBuilderContext();
+  const { initLoading, funnelData, funnelFieldData, historyPassedSteps, funnelFilterData } = useFunnelBuilderContext();
   
   return <div className="funnel-app-container">
     {
@@ -77,13 +77,15 @@ export default function FunnelApp() {
         const { questions } = funnelData;
 
         return <div className="question-container">
+          {/* { JSON.stringify(funnelFilterData) } */}
           {/* <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelData?.funnel_connectors?.edges, null, "\t") }}></pre>   */}
           {/* <div>Edges</div>
           <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelData?.funnel_connectors?.edges, null, "\t") }}></pre>
           <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelData?.funnel_connectors?.nodes, null, "\t") }}></pre> */}
           {/* <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelFieldData, null, "\t") }}></pre> */}
           {/* <pre dangerouslySetInnerHTML={{__html: JSON.stringify(funnelData, null, "\t") }}></pre> */}
-          
+          {/* <br />
+          { JSON.stringify(funnelFieldData) } */}
           <TransitionNodes nodes={ nodes } />
         </div> 
       })()

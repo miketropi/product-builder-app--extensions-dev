@@ -1,5 +1,15 @@
 @import './variables';
 
+.loading-comp {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  
+  svg {
+    width: 46px;
+  }
+}
+
 .question-container {
   width: 930px;
   margin: 2em auto;

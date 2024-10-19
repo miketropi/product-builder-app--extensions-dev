@@ -1,21 +1,27 @@
 import { createContext, useContext, useEffect, useState, useCallback, useRef, useMemo } from "react";
 import FunnelApi from '../libs/FunnelApi';
+import FunnelProxyApi from "../libs/FunnelProxyApi";
 
 const FunnelBuilderContext = createContext(null);
 
 const FunnelBuilderContextProvider = (props) => {
   const { children, storeId, funnelId, ENDPOINT, API_KEY } = props;
   const API = useRef(null);
+  const ProxyApi = useRef(null);
   const [ initLoading, setInitLoading ] = useState(true);
   const [ funnelData, setFunnelData ] = useState(null);
   const [ funnelFieldData, setFunnelFieldData ] = useState([]);
   const [ questionCurrentViewID, setQuestionCurrentViewID ] = useState(null);
   const [ historyPassedSteps, setHistoryPassedSteps ] = useState([]);
   const [ sectionHeight, setSectionHeight ] = useState(0);
-  const [ effectDirection, setEffectDirection ] = useState('__NEXT__')
+  const [ effectDirection, setEffectDirection ] = useState('__NEXT__');
+  const [ funnelFilterData, setFunnelFilterData ] = useState({
+    filters: [],
+  });
 
   useEffect(() => {
     API.current = new FunnelApi(storeId);
+    ProxyApi.current = new FunnelProxyApi();
     init();
   }, [])
 
@@ -41,6 +47,16 @@ const FunnelBuilderContextProvider = (props) => {
     setFunnelData(res);
     setFunnelFieldData(buildFieldDataInit(res.questions));
 
+    if(res?.collection_object_default) {
+      if(res?.collection_object_default?.handle) {
+        onAddFilterData({
+          __key: 'init_key__collection_default',
+          type: 'collection',
+          value: res?.collection_object_default?.handle,
+        })
+      }
+    }
+
     let firstQuestionID = res?.funnel_connectors?.edges.find(i => i.source == '__START__')?.target;
     setQuestionCurrentViewID(firstQuestionID);
   }
@@ -58,37 +74,46 @@ const FunnelBuilderContextProvider = (props) => {
   }
 
   const onUpdateFunnelField = (qKey, value, cb) => {
+    
     const __funnelFieldData = [...funnelFieldData];
     let __found = __funnelFieldData.findIndex(f => f.__key == qKey);
-
+    
     __funnelFieldData[__found] = { ...__funnelFieldData[__found], value: value }
-
+    // console.log('__found', __found, __funnelFieldData[__found], value)
     setFunnelFieldData(__funnelFieldData);
     if(cb) cb.call('', qKey, value, __funnelFieldData) 
   }
 
   const findNextStep = (qKey, handle) => {
-    // console.log(qKey, handle); return;
+    
+    // console.log('findNextStep', qKey, handle); return; 
     let Edges = funnelData?.funnel_connectors?.edges;
-    let found = Edges.find(e => e.source == qKey && e.sourceHandle == handle);
+    // console.log('findNextStep', Edges.find(e => e.source == qKey)); return;
+
+    let found = Edges.find(e => e.source == qKey && e.sourceHandle == handle); 
+    if(found) return found;
+
+    // console.log('findNextStep', found);
     let foundOnlySource = null;
 
-    if(Array.isArray(handle)) {
-      foundOnlySource = Edges.find(e => e.source == qKey); 
-    }
+    // if(Array.isArray(handle)) {
+    //   foundOnlySource = Edges.find(e => e.source == qKey); 
+    // }
+
+    foundOnlySource = Edges.find(e => e.source == qKey); 
     
     // console.log([qKey, handle, found, foundOnlySource]) 
     // console.log(found);
-    return found ? found : foundOnlySource;
+    return foundOnlySource;
   }
 
   const onNextStep = () => {
     setEffectDirection('__NEXT__');
     // console.log(questionCurrentViewID); return;
     // console.log(questionCurrentViewID); return;
-
+    // console.log('questionCurrentViewID', questionCurrentViewID);
     nodeActionController(questionCurrentViewID, { 
-      QuestionNode: (node) => {
+      QuestionNode: (node) => { // console.log('onNextStep', node);
         const found = funnelFieldData.find(f => f.__key == questionCurrentViewID);
         const { __key, value, required } = found;
         const edge = findNextStep(__key, value);
@@ -145,6 +170,52 @@ const FunnelBuilderContextProvider = (props) => {
     return false;
   }
 
+  const onFunnelOptionsFilter = async (field) => {
+    const res = await ProxyApi.current.funnelOptionsFilter({
+      ...funnelFilterData,
+      field,
+    });
+
+    return res;
+  }
+
+  /**
+   * 
+   * @param {*} field 
+    {
+      __key: '123',
+      type: '',
+      value: '',
+    }
+   */
+  const onAddFilterData = (field) => {
+    let __funnelFilterData = {...funnelFilterData}
+    let __filters = [...__funnelFilterData.filters];
+    const { __key, type, value } = field;
+    let foundIndex = __filters.findIndex(item => (item.__key == __key));
+
+    if(foundIndex === -1) {
+      // not exist
+      __filters.push(field);
+    } else {
+      __filters[foundIndex].value = value;
+    }
+
+    __funnelFilterData.filters = __filters;
+    setFunnelFilterData(__funnelFilterData);
+  }
+
+  const onRemoveFilterData = (field) => {
+    const { __key, type, value } = field;
+    let __funnelFilterData = {...funnelFilterData}
+    let __filters = [...__funnelFilterData.filters];
+    let foundIndex = __filters.findIndex(item => (item.__key == __key));
+
+    __filters.splice(foundIndex, 1);
+    __funnelFilterData.filters = __filters;
+    setFunnelFilterData(__funnelFilterData);
+  }
+
   const value = {
     initLoading, setInitLoading,
     funnelData, setFunnelData,
@@ -153,12 +224,17 @@ const FunnelBuilderContextProvider = (props) => {
     historyPassedSteps, setHistoryPassedSteps,
     sectionHeight, setSectionHeight,
     effectDirection, setEffectDirection,
+    funnelFilterData, setFunnelFilterData,
     fn: {
       onUpdateFunnelField,
       onNextStep,
       onPrevStep,
       canNextStep,
       canPrevStep,
+
+      onFunnelOptionsFilter,
+      onAddFilterData,
+      onRemoveFilterData,
     }
   }
 

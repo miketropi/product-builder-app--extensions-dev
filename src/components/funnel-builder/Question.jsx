@@ -13,7 +13,7 @@ export default function Question({ q }) {
   const [ __value, set__Value ] = useState('');
 
   useEffect(() => {
-    if(__value && ['QSingleChoice'].includes(field?.type)) {
+    if(__value && ['QSingleChoice', 'QCollectionChoice', 'QTagChoice'].includes(field?.type)) {
       onNextStep();
     } 
   }, [__value]); 
@@ -41,7 +41,7 @@ export default function Question({ q }) {
           {/* { funnelFieldData.find(f => f.__key == __key)?.value } */}
           <DynamicField 
             { ...(() => {
-              return { ...field, value: funnelFieldData.find(f => f.__key == __key)?.value }
+              return { ...field, value: funnelFieldData.find(f => f.__key == __key)?.value, __qkey: q.__key }
             })() } 
             onChange={ v => {
               onUpdateFunnelField(__key, v);
