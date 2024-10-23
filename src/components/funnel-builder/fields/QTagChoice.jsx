@@ -5,24 +5,38 @@ import Loading from '../../Loading';
 
 export default function QTagChoice({ field }) {
   const { fn } = useFunnelBuilderContext();
-  const { onFunnelOptionsFilter, onAddFilterData, onRemoveFilterData } = fn;
+  const { onFunnelOptionsFilter, onAddFilterData, onRemoveFilterData, onNextStep } = fn;
   const [loading, setLoading] = useState(true);
   const { __key, help_text, value, require, onChange, __qkey } = field;
   const [options, setOptions] = useState([]);
+
   let option_ui = 'default';
 
   const checkOptions = async (o) => {
     const res = await onFunnelOptionsFilter(field);
     // console.log(res);
-    setOptions(res); 
+
+    const oReady = res.filter(__o => {
+      return  __o?.disable !== true
+    });
+
+    if(!oReady || oReady.length == 0) {
+      onNextStep(); 
+    }
+
+    setOptions(oReady); 
     setLoading(false);
-    // setOptions(res);  
-    // setLoading(false);
   }
   
   useEffect(() => {
-    checkOptions(field.options);
+    // console.log(field?.__qkey)
+    // checkOptions(field.options);
   }, [field])
+
+  useEffect(() => {
+    // console.log(field?.__qkey);
+    checkOptions(field.options);
+  }, [])
   
   return <div className={ ['q-field q-field__tag-choice', `__ui-${ option_ui }`].join(' ') }>
     <div className={ ['__options', `__o_ui-${ option_ui }`].join(' ') }>

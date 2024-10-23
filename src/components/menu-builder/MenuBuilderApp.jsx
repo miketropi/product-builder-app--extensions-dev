@@ -50,7 +50,18 @@ export default function MenuBuilderApp() {
               linkAttributes.href = url;
             }
 
-            return <li className={ liClasses.join(' ') } key={ __key } data-id={ __key }>
+            return <li 
+              className={ liClasses.join(' ') } 
+              key={ __key } 
+              data-id={ __key } 
+              data-nav-level={ lv } 
+              data-nav-item={ ((__u, __name) => { 
+                // console.log(__name);
+                let segment = __u.split('/');
+                let newName = __name.split(' ').join('-').toLowerCase();
+                // console.log(segment.at(-1))
+                return segment.at(-1) == '' ? newName : segment.at(-1);
+              })(url, name) } >
               <a { ...linkAttributes } > 
                 { icon ? <MenuIcon source={ icon } /> : '' } 
                 { 

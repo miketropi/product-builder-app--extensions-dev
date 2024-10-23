@@ -1,15 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFunnelBuilderContext } from "../../context/FunnelBuilderContext";
 import useCountdown from "../../libs/useHooks/useCountdown";
+import Loading from '../Loading';
 
 export default function RedirectNode({ nodeData }) {
-  const counter = useCountdown(5);
+  const [ loading, setLoading ] = useState(true);
   const { redirect_url } = nodeData;
-  const { funnelFieldData } = useFunnelBuilderContext();
+  const { fn, funnelFieldData, funnelFilterData } = useFunnelBuilderContext();
+  const { filters } = funnelFilterData;
+  const { onFunnelOptionsFilter } = fn;
+  const [ redirectUrl, setRedirectUrl ] = useState('');
+  const counter = useCountdown(5);
 
-  const makeRedirectUrl = () => {
+  const makeRedirectUrl = () => { 
     let __redirect_url = redirect_url;
-    funnelFieldData.forEach(f => {
+    let collection_default = filters.find(i => i.__key === 'init_key__collection_default');
+
+    [...funnelFieldData, { __key: '__collection_default_handle', value: collection_default?.value }].forEach(f => {
       let __v = (Array.isArray(f.value) ? f.value.join(',') : f.value);
       __redirect_url = __redirect_url.replaceAll(`[value]${ f.__key }[/value]`, __v);
     })
@@ -19,10 +26,28 @@ export default function RedirectNode({ nodeData }) {
 
   useEffect(() => {
     if(counter <= 0) {
-      // alert(makeRedirectUrl())
-      window.location.href = makeRedirectUrl();
+      window.location.href = redirectUrl;
     }
   }, [counter])
+
+  const getProductByFilter = async () => {
+    const res = await onFunnelOptionsFilter({
+      type: 'GetProductsByFilter'
+    });
+
+    if(res && res.length == 1) {
+      setRedirectUrl(`/products/${ res[0]?.node?.handle }`);
+    }
+  }
+
+  useEffect(() => {
+    // console.log(field?.__qkey);
+    setRedirectUrl(makeRedirectUrl());
+
+    if(filters.length > 0) {
+      getProductByFilter();
+    }
+  }, [])
 
   return <div className="redirect-node-comp" style={{ padding: `3em 0` }} > 
     <h2>Thank You!</h2>

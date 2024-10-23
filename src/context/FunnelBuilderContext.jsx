@@ -170,7 +170,7 @@ const FunnelBuilderContextProvider = (props) => {
     return false;
   }
 
-  const onFunnelOptionsFilter = async (field) => {
+  const onFunnelOptionsFilter = async (field = {}) => {
     const res = await ProxyApi.current.funnelOptionsFilter({
       ...funnelFilterData,
       field,
