@@ -33,7 +33,7 @@ export default function MenuBuilderApp() {
         }
         {
           menu.map((item, __i_index) => {
-            const { __key, name, url, children, type, icon } = item;
+            const { __key, name, url, children, type, icon, open_new_window } = item;
             const size = (item?.config?.containerSize ? `__size-${ item.config.containerSize }` : '');
             
             let liClasses = [
@@ -50,13 +50,17 @@ export default function MenuBuilderApp() {
               linkAttributes.href = url;
             }
 
+            if(open_new_window == true) {
+              linkAttributes.target = "_blank"; 
+            }
+
             return <li 
               className={ liClasses.join(' ') } 
               key={ __key } 
               data-id={ __key } 
               data-nav-level={ lv } 
               data-nav-item={ ((__u, __name) => { 
-                // console.log(__name);
+                // console.log(__name); 
                 let segment = __u.split('/');
                 let newName = __name.split(' ').join('-').toLowerCase();
                 // console.log(segment.at(-1))

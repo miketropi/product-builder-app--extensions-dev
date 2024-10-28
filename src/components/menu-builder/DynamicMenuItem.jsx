@@ -11,7 +11,7 @@ const __WITHOUT_ARROW_TYPES = [
 export default function DynamicMenuItem(props) {
   const [ open, setOpen ] = useState(false);
   const { menu, parentItem, level, children, hasMenuChildren } = props;
-  const { __key, name, url, type } = menu;
+  const { __key, name, url, type, open_new_window } = menu;
 
   let liClasses = [
     'menu-item', 
@@ -63,6 +63,10 @@ export default function DynamicMenuItem(props) {
   let linkAttributes = {};
   if(url) {
     linkAttributes.href = url;
+  }
+
+  if(open_new_window == true) { 
+    linkAttributes.target = "_blank"; 
   }
   
   return <li className={ liClasses.join(' ') }>

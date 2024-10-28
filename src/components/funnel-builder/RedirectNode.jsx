@@ -17,8 +17,9 @@ export default function RedirectNode({ nodeData }) {
     let collection_default = filters.find(i => i.__key === 'init_key__collection_default');
 
     [...funnelFieldData, { __key: '__collection_default_handle', value: collection_default?.value }].forEach(f => {
+      
       let __v = (Array.isArray(f.value) ? f.value.join(',') : f.value);
-      __redirect_url = __redirect_url.replaceAll(`[value]${ f.__key }[/value]`, __v);
+      __redirect_url = __redirect_url.replaceAll(`[value]${ f.__key }[/value]`, __v.replaceAll('Brand_', ''));
     })
 
     return __redirect_url;
@@ -36,7 +37,7 @@ export default function RedirectNode({ nodeData }) {
     });
 
     if(res && res.length == 1) {
-      setRedirectUrl(`/products/${ res[0]?.node?.handle }`);
+      setRedirectUrl(`/products/${ res[0]?.node?.handle }?fs=1`); 
     }
   }
 

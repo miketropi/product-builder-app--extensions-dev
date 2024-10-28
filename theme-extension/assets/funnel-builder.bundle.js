@@ -440,7 +440,7 @@ function RedirectNode(_ref) {
       value: collection_default === null || collection_default === void 0 ? void 0 : collection_default.value
     }]).forEach(function (f) {
       var __v = Array.isArray(f.value) ? f.value.join(',') : f.value;
-      __redirect_url = __redirect_url.replaceAll("[value]".concat(f.__key, "[/value]"), __v);
+      __redirect_url = __redirect_url.replaceAll("[value]".concat(f.__key, "[/value]"), __v.replaceAll('Brand_', ''));
     });
     return __redirect_url;
   };
@@ -462,7 +462,7 @@ function RedirectNode(_ref) {
           case 2:
             res = _context.sent;
             if (res && res.length == 1) {
-              setRedirectUrl("/products/".concat((_res$ = res[0]) === null || _res$ === void 0 || (_res$ = _res$.node) === null || _res$ === void 0 ? void 0 : _res$.handle));
+              setRedirectUrl("/products/".concat((_res$ = res[0]) === null || _res$ === void 0 || (_res$ = _res$.node) === null || _res$ === void 0 ? void 0 : _res$.handle, "?fs=1"));
             }
           case 4:
           case "end":
