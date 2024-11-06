@@ -7,10 +7,10 @@ export default function QTagChoice({ field }) {
   const { fn } = useFunnelBuilderContext();
   const { onFunnelOptionsFilter, onAddFilterData, onRemoveFilterData, onNextStep } = fn;
   const [loading, setLoading] = useState(true);
-  const { __key, help_text, value, require, onChange, __qkey } = field;
+  const { __key, help_text, value, require, onChange, option_style, __qkey } = field;
   const [options, setOptions] = useState([]);
-
-  let option_ui = 'default';
+  // console.log('option_style', option_style)
+  let option_ui = option_style;
 
   const checkOptions = async (o) => {
     const res = await onFunnelOptionsFilter(field);
@@ -39,6 +39,7 @@ export default function QTagChoice({ field }) {
   }, [])
   
   return <div className={ ['q-field q-field__tag-choice', `__ui-${ option_ui }`].join(' ') }>
+    {/* { JSON.stringify(field) } */}
     <div className={ ['__options', `__o_ui-${ option_ui }`].join(' ') }>
     {
       (loading == true) ? <Loading /> : <>

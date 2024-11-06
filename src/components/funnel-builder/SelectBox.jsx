@@ -61,6 +61,73 @@ export default function SelectBox({ options, multiple, value, onChange, template
     onChange(multiple ? __newValue : __newValue.join(','));
   }
 
+  const templateTags = () => {
+    let isCol = ([
+      '2-cols-square-472_572', 
+      '2-cols-portrait-472_630', 
+      '2-cols-landscape-472_314',
+      '3-cols-square-309_309', 
+      '3-cols-portrait-309_463',
+      '3-cols-landscape-309_206',
+      '4-cols-square-228_228',
+      '4-cols-portrait-228_342',
+      '4-cols-landscape-228_152'
+    ].includes(template[0]));
+    
+    return <>
+      {
+        ((__isCol) => {
+          return __isCol 
+            ? <>
+              {
+                options.map((o) => {
+                  const { __key, label, image, disable } = o;
+                  const selected = isSelected_Fn(o.value);
+
+                  return <li 
+                    className={ ['o-item tag-template--col', (disable == true ? '__disable' : '')].join(' ') } 
+                    key={ __key }
+                    title={ label }
+                    style={{ background: `url(${ image }) no-repeat center center / contain, #ebebeb` }}
+                    
+                    selected={ selected } 
+                    onClick={ e => onChange_Fn(!selected, o.value) }
+                    >
+                    {/* { label }
+                    <img src={ image } width="" height="" alt={ label } /> */}
+                  </li>
+                })
+              }
+            </> 
+            : <>
+              {
+                options.map((o) => {
+                  const { __key, label, image, disable } = o;
+                  const selected = isSelected_Fn(o.value);
+
+                  return <li
+                    className={ ['o-item tag-template--list', (disable == true ? '__disable' : '')].join(' ') } 
+                    key={ __key }
+                    title={ label }
+
+                    selected={ selected } 
+                    onClick={ e => onChange_Fn(!selected, o.value) }
+                  >
+                    <span className="__text">{ label }</span>
+                    <span className="__icon">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.66038 2L11 8L5.66038 14L5 13.2474L9.66981 8L5 2.75265L5.66038 2Z" fill="#747474"/>
+                      </svg>
+                    </span>
+                  </li>
+                })
+              }
+            </>
+        })(isCol)
+      }
+    </>
+  }
+
   const __templates = {
     default: () => {
       return <>
@@ -129,7 +196,7 @@ export default function SelectBox({ options, multiple, value, onChange, template
         {
           options.map((o) => {
             const { __key, label, disable, extra__image_url } = o;
-            const selected = isSelected_Fn(o.value);
+            const selcted = isSelected_Fn(o.value);
 
             return <li className={ ['__image-item', (disable == true ? '__disable' : '')].join(' ') } key={ __key }>
               {/* { JSON.stringify(o) } */}
@@ -142,11 +209,24 @@ export default function SelectBox({ options, multiple, value, onChange, template
           })
         }
       </>
-    }
+    },
+    '2-cols-square-472_572': templateTags,
+    '2-cols-portrait-472_630': templateTags,
+    '2-cols-landscape-472_314': templateTags,
+    '3-cols-square-309_309': templateTags,
+    '3-cols-portrait-309_463': templateTags,
+    '3-cols-landscape-309_206': templateTags,
+    '4-cols-square-228_228': templateTags,
+    '4-cols-portrait-228_342': templateTags,
+    '4-cols-landscape-228_152': templateTags,
+    'list-1-column': templateTags,
+    'list-2-columns': templateTags,
+    'list-3-columns': templateTags,
+    'list-4-columns': templateTags,
   }
 
   return <ul className={ ['select-box-component', `__temp__${ template }`].join(' ') }>
-    {/* { template } */}
+    {/* { console.log(template) } */}
     { __templates[template]() }
   </ul>
 }

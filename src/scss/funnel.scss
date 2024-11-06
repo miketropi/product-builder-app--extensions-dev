@@ -11,7 +11,8 @@
 }
 
 .question-container {
-  width: 930px;
+  // width: 930px;
+  width: 100%;
   margin: 2em auto;
   max-width: 100%;
 }
@@ -315,4 +316,108 @@
       border-color: $accent-color;
     }
   }
+}
+
+ul.select-box-component  {
+
+  $size: 
+    2 "square" 472 572,
+    2 "portrait" 472 630,
+    2 "landscape" 472 314,
+    3 "square" 309 309,
+    3 "portrait" 309 463,
+    3 "landscape" 309 206,
+    4 "square" 228 228,
+    4 "portrait" 228 342,
+    4 "landscape" 228 152;
+
+  @each $col, $size, $width, $height in $size {
+    &.__temp__#{ $col }-cols-#{ $size }-#{ $width }_#{ $height } {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      list-style: none;
+      justify-content: center;
+
+      .tag-template--col {
+        width: #{ $width }px;
+        height: #{ $height }px;
+        max-width: 100%;
+      }
+    }
+  }
+
+  .tag-template--col {
+    cursor: pointer;
+  }
+}
+
+ul.select-box-component {
+
+  &.__temp__list-1-column {
+    display: grid;
+    grid-template-columns: repeat(1, 460px);
+    gap: 16px;
+
+    .tag-template--list {
+      background: #F2F2F2;
+      border-radius: 3px;
+      max-width: 100%;
+      list-style: none;
+      padding: 20px;
+      line-height: normal;
+      cursor: pointer;
+      max-width: 100%;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: .3s ease;
+      -webkit-transition: .3s ease;
+
+      .__icon {
+        line-height: 0;
+      }
+
+      &:hover {
+        background: darken(#F2F2F2, 5);
+      }
+    }
+  }
+
+  $list: 2, 3, 4;
+
+  @each $l_item in $list {
+    &.__temp__list-#{ $l_item }-columns {
+      display: grid;
+      grid-template-columns: repeat($l_item, 309px);
+      gap: 16px;
+
+      .tag-template--list {
+        background: #F2F2F2;
+        border-radius: 3px;
+        max-width: 100%;
+        list-style: none;
+        padding: 20px;
+        line-height: normal;
+        cursor: pointer;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: .3s ease;
+        -webkit-transition: .3s ease;
+
+        .__icon {
+          line-height: 0;
+        }
+
+        &:hover {
+          background: darken(#F2F2F2, 5);
+        }
+      }
+    }
+  }
+
+  
 }
