@@ -63,7 +63,7 @@ export default function SelectBox({ options, multiple, value, onChange, template
 
   const templateTags = () => {
     let isCol = ([
-      '2-cols-square-472_572', 
+      '2-cols-square-472_472', 
       '2-cols-portrait-472_630', 
       '2-cols-landscape-472_314',
       '3-cols-square-309_309', 
@@ -73,7 +73,7 @@ export default function SelectBox({ options, multiple, value, onChange, template
       '4-cols-portrait-228_342',
       '4-cols-landscape-228_152'
     ].includes(template[0]));
-    
+
     return <>
       {
         ((__isCol) => {
@@ -100,6 +100,7 @@ export default function SelectBox({ options, multiple, value, onChange, template
               }
             </> 
             : <>
+              
               {
                 options.map((o) => {
                   const { __key, label, image, disable } = o;
@@ -210,7 +211,7 @@ export default function SelectBox({ options, multiple, value, onChange, template
         }
       </>
     },
-    '2-cols-square-472_572': templateTags,
+    '2-cols-square-472_472': templateTags,
     '2-cols-portrait-472_630': templateTags,
     '2-cols-landscape-472_314': templateTags,
     '3-cols-square-309_309': templateTags,
@@ -223,9 +224,26 @@ export default function SelectBox({ options, multiple, value, onChange, template
     'list-2-columns': templateTags,
     'list-3-columns': templateTags,
     'list-4-columns': templateTags,
+    'no-image': templateTags, 
   }
 
-  return <ul className={ ['select-box-component', `__temp__${ template }`].join(' ') }>
+  let optCount = options.length;
+  let col = ((num) => {
+    
+    if(num <= 9) {
+      return 1;
+    }
+
+    if(num <= 20) {
+      return 2; 
+    }
+
+    return 3;
+  })(optCount);
+
+  return <ul className={ ['select-box-component', (() => {
+    return (template[0] == 'no-image' ? `__col-${ col }` : '');
+  })(), `__temp__${ template }`].join(' ') }>
     {/* { console.log(template) } */}
     { __templates[template]() }
   </ul>

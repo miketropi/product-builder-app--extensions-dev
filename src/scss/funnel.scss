@@ -321,7 +321,7 @@
 ul.select-box-component  {
 
   $size: 
-    2 "square" 472 572,
+    2 "square" 472 472,
     2 "portrait" 472 630,
     2 "landscape" 472 314,
     3 "square" 309 309,
@@ -416,6 +416,59 @@ ul.select-box-component {
           background: darken(#F2F2F2, 5);
         }
       }
+    }
+  } 
+}
+
+.select-box-component.__temp__no-image {
+  display: grid;
+  gap: 16px;
+
+  .tag-template--list {
+    background: #F2F2F2;
+    border-radius: 3px;
+    max-width: 100%;
+    list-style: none;
+    padding: 20px;
+    line-height: normal;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: .3s ease;
+    -webkit-transition: .3s ease;
+
+    .__icon {
+      line-height: 0; 
+    }
+
+    &:hover {
+      background: darken(#F2F2F2, 5);
+    }
+  }
+
+  &.__col-1 {
+    grid-template-columns: repeat(1, minmax(auto, 460px));
+  }
+
+  &.__col-2 {
+    grid-template-columns: repeat(2, minmax(auto, 460px));
+
+    @media(max-width: 460px) {
+      grid-template-columns: repeat(1, minmax(auto, 309px));
+    }
+  }
+
+  &.__col-3 {
+    grid-template-columns: repeat(3, minmax(auto, 309px));
+
+    @media(max-width: 760px) {
+      grid-template-columns: repeat(2, minmax(auto, 309px));
+    }
+
+    @media(max-width: 460px) {
+      grid-template-columns: repeat(1, minmax(auto, 309px));
     }
   }
 

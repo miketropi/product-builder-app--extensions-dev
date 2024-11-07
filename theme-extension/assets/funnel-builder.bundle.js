@@ -621,7 +621,7 @@ function SelectBox(_ref4) {
     onChange(multiple ? __newValue : __newValue.join(','));
   };
   var templateTags = function templateTags() {
-    var isCol = ['2-cols-square-472_572', '2-cols-portrait-472_630', '2-cols-landscape-472_314', '3-cols-square-309_309', '3-cols-portrait-309_463', '3-cols-landscape-309_206', '4-cols-square-228_228', '4-cols-portrait-228_342', '4-cols-landscape-228_152'].includes(template[0]);
+    var isCol = ['2-cols-square-472_472', '2-cols-portrait-472_630', '2-cols-landscape-472_314', '3-cols-square-309_309', '3-cols-portrait-309_463', '3-cols-landscape-309_206', '4-cols-square-228_228', '4-cols-portrait-228_342', '4-cols-landscape-228_152'].includes(template[0]);
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
       children: function (__isCol) {
         return __isCol ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
@@ -773,7 +773,7 @@ function SelectBox(_ref4) {
         })
       });
     },
-    '2-cols-square-472_572': templateTags,
+    '2-cols-square-472_472': templateTags,
     '2-cols-portrait-472_630': templateTags,
     '2-cols-landscape-472_314': templateTags,
     '3-cols-square-309_309': templateTags,
@@ -785,10 +785,23 @@ function SelectBox(_ref4) {
     'list-1-column': templateTags,
     'list-2-columns': templateTags,
     'list-3-columns': templateTags,
-    'list-4-columns': templateTags
+    'list-4-columns': templateTags,
+    'no-image': templateTags
   };
+  var optCount = options.length;
+  var col = function (num) {
+    if (num <= 9) {
+      return 1;
+    }
+    if (num <= 20) {
+      return 2;
+    }
+    return 3;
+  }(optCount);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("ul", {
-    className: ['select-box-component', "__temp__".concat(template)].join(' '),
+    className: ['select-box-component', function () {
+      return template[0] == 'no-image' ? "__col-".concat(col) : '';
+    }(), "__temp__".concat(template)].join(' '),
     children: __templates[template]()
   });
 }
