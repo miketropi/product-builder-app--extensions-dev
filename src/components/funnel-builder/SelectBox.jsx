@@ -36,6 +36,7 @@ const ImageItem = ({ title, image, onClick, selected }) => {
 
 export default function SelectBox({ options, multiple, value, onChange, template }) {
   const [ __value, set__Value ] = useState([]);
+  let t = (typeof template == 'string' ? template : template[0]);
 
   const isSelected_Fn = useCallback((oValue) => {
     return __value.includes(oValue)
@@ -60,8 +61,9 @@ export default function SelectBox({ options, multiple, value, onChange, template
     set__Value(__newValue);
     onChange(multiple ? __newValue : __newValue.join(','));
   }
-
+  
   const templateTags = () => {
+    
     let isCol = ([
       '2-cols-square-472_472', 
       '2-cols-portrait-472_630', 
@@ -72,7 +74,7 @@ export default function SelectBox({ options, multiple, value, onChange, template
       '4-cols-square-228_228',
       '4-cols-portrait-228_342',
       '4-cols-landscape-228_152'
-    ].includes(template[0]));
+    ].includes(t));
 
     return <>
       {
@@ -85,7 +87,7 @@ export default function SelectBox({ options, multiple, value, onChange, template
                   const selected = isSelected_Fn(o.value);
 
                   return <li 
-                    className={ ['o-item tag-template--col', (disable == true ? '__disable' : '')].join(' ') } 
+                    className={ ['o-item tag-template--col', (image ? '' : '__no-image'),(disable == true ? '__disable' : '')].join(' ') } 
                     key={ __key }
                     title={ label }
                     style={{ background: `url(${ image }) no-repeat center center / contain, #ebebeb` }}
@@ -93,8 +95,12 @@ export default function SelectBox({ options, multiple, value, onChange, template
                     selected={ selected } 
                     onClick={ e => onChange_Fn(!selected, o.value) }
                     >
-                    {/* { label }
-                    <img src={ image } width="" height="" alt={ label } /> */}
+                    <span className="__label">{ label }</span>
+                    <span className="__icon">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.66038 2L11 8L5.66038 14L5 13.2474L9.66981 8L5 2.75265L5.66038 2Z" fill="#747474"/>
+                      </svg>
+                    </span>
                   </li>
                 })
               }
@@ -241,10 +247,12 @@ export default function SelectBox({ options, multiple, value, onChange, template
     return 3;
   })(optCount);
 
+  
   return <ul className={ ['select-box-component', (() => {
-    return (template[0] == 'no-image' ? `__col-${ col }` : '');
-  })(), `__temp__${ template }`].join(' ') }>
+    // console.log();
+    return (t == 'no-image' ? `__col-${ col }` : '');
+  })(), `__temp__${ t }`].join(' ') }>
     {/* { console.log(template) } */}
-    { __templates[template]() }
+    { __templates[t]() }
   </ul>
 }

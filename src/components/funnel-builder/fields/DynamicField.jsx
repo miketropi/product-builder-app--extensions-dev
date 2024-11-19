@@ -8,5 +8,8 @@ const __FIELDS__ = { QSingleChoice, QTextField, QMultipleChoice, QCollectionChoi
 
 export default function DynamicField(props) {
   const Component = __FIELDS__[props.type];
-  return <Component field={ props } />;
+  return <>
+    {/* { console.log('DynamicField', props) } */} 
+    <Component field={ props } />
+  </>;
 }

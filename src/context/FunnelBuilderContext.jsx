@@ -19,6 +19,13 @@ const FunnelBuilderContextProvider = (props) => {
     filters: [],
   });
 
+  /**
+   * From v2 use newHistoryState
+   * using for Back action
+   * 
+   */
+  const [ newHistoryState, setNewHistoryState ] = useState([]);
+
   useEffect(() => {
     API.current = new FunnelApi(storeId);
     ProxyApi.current = new FunnelProxyApi();
@@ -77,11 +84,22 @@ const FunnelBuilderContextProvider = (props) => {
     
     const __funnelFieldData = [...funnelFieldData];
     let __found = __funnelFieldData.findIndex(f => f.__key == qKey);
-    
+    // console.log('onUpdateFunnelField', funnelFieldData, __funnelFieldData, __found, __funnelFieldData[__found]);
+    // console.log('onUpdateFunnelField - newHistoryState', newHistoryState); 
+
     __funnelFieldData[__found] = { ...__funnelFieldData[__found], value: value }
     // console.log('__found', __found, __funnelFieldData[__found], value)
     setFunnelFieldData(__funnelFieldData);
-    if(cb) cb.call('', qKey, value, __funnelFieldData) 
+
+    if(cb) cb.call('', qKey, value, __funnelFieldData);
+
+    // push History
+    console.log('onUpdateFunnelField', value);
+    onPushHistory({
+      funnelFilterData: funnelFilterData,
+      funnelFieldData: __funnelFieldData,
+      questionCurrentViewID,
+    })
   }
 
   const findNextStep = (qKey, handle) => {
@@ -216,6 +234,39 @@ const FunnelBuilderContextProvider = (props) => {
     setFunnelFilterData(__funnelFilterData);
   }
 
+  const onPushHistory = (logData) => {
+    let __newHistoryState = [...newHistoryState];
+    __newHistoryState.push(JSON.parse(JSON.stringify(logData)));
+    setNewHistoryState(__newHistoryState);
+  }
+
+  const onBackHisttory = () => {
+    let __newHistoryState = [...newHistoryState]; 
+    let lastIndex = (__newHistoryState.length - 1);
+    
+    const __back = __newHistoryState.pop();
+
+    __back.funnelFieldData.map((__item) => {
+      if(__item.__key == __back.questionCurrentViewID) {
+        let __fq = funnelData?.questions.find(__q => __q.__key == __back.questionCurrentViewID);
+        // console.log('__fq', __fq);
+        __item.value = __fq?.field?.value;
+      }
+      return __item;
+    }) 
+
+    // console.log('onBackHisttory', __back.funnelFieldData)
+    // console.log('onBackHisttory - questionCurrentViewID', __back.questionCurrentViewID)
+
+    setFunnelFilterData(__back.funnelFilterData);
+    setFunnelFieldData(__back.funnelFieldData);
+    setQuestionCurrentViewID(__back.questionCurrentViewID);
+
+    // update newHistoryState
+    // delete __newHistoryState[lastIndex];
+    setNewHistoryState(__newHistoryState); 
+  }
+
   const value = {
     initLoading, setInitLoading,
     funnelData, setFunnelData,
@@ -225,6 +276,7 @@ const FunnelBuilderContextProvider = (props) => {
     sectionHeight, setSectionHeight,
     effectDirection, setEffectDirection,
     funnelFilterData, setFunnelFilterData,
+    newHistoryState, setNewHistoryState, 
     fn: {
       onUpdateFunnelField,
       onNextStep,
@@ -235,6 +287,9 @@ const FunnelBuilderContextProvider = (props) => {
       onFunnelOptionsFilter,
       onAddFilterData,
       onRemoveFilterData,
+
+      onPushHistory,
+      onBackHisttory,
     }
   }
 

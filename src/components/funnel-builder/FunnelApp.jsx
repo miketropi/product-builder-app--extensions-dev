@@ -29,9 +29,9 @@ const TransitionNodes = (props) => {
 
   const transitions = useTransition(currentViewIndex, {
     // ref: transRef,
-    from,
-    enter,
-    leave, 
+    // from,
+    // enter,
+    // leave, 
   });
 
   return <div className="transition-nodes" style={{ minHeight: `${ sectionHeight }px` }}>

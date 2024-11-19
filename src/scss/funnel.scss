@@ -1,5 +1,20 @@
 @import './variables';
 
+.funnel-app-container {
+  border-radius: 8px;
+  box-shadow: 0 5px 10px 1px rgba(1, 1, 1, .2);
+  padding: 48px 2em;
+
+  @media(max-width: 768px) {
+    padding: 0;
+    box-shadow: none;
+
+    .question-frame {
+      padding: 0 10px;
+    }
+  }
+}
+
 .loading-comp {
   display: flex;
   align-items: center;
@@ -25,9 +40,10 @@
 
   .question-text {
     font-size: 24px;
-    color: $accent-color;
-    font-weight: normal;
+    color: #004F59;
+    font-weight: 600;
     margin: 1em 0 .5em;
+    letter-spacing: 0;
   }
 
   .question-content {
@@ -281,8 +297,39 @@
   flex-direction: column;
   align-items: center;
 
+  width: 355px;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+
   h2 {
-    margin: 0 0 .5em;
+    margin: 0 0 16px;
+    color: #004F59;
+    font-weight: bold;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+
+  .r__spacing {
+    display: block;
+    height: 48px;
+  }
+
+  .r__start-again {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    margin: 16px 0;
+    gap: 8px;
+    color: #666666;
+    font-weight: bold;
+    letter-spacing: 0;
+    font-weight: 14px;
+    text-decoration: none;
   }
 
   .button-redirect-now {
@@ -290,10 +337,15 @@
     background: $accent-color;
     color: white;
     border-radius: 1px;
-    padding: 1em 1.5em;
+    padding: 12px 24px;
     cursor: pointer;
     transition: .3s ease;
     -webkit-transition: .3s ease;
+    border-radius: 4px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 13px;
 
     &:hover {
       opacity: .7;
@@ -321,34 +373,113 @@
 ul.select-box-component  {
 
   $size: 
-    2 "square" 472 472,
-    2 "portrait" 472 630,
-    2 "landscape" 472 314,
-    3 "square" 309 309,
-    3 "portrait" 309 463,
-    3 "landscape" 309 206,
-    4 "square" 228 228,
-    4 "portrait" 228 342,
-    4 "landscape" 228 152;
+    2 "square" 472 472 2,
+    2 "portrait" 472 630 2,
+    2 "landscape" 472 314 2,
+    3 "square" 309 309 2,
+    3 "portrait" 309 463 2,
+    3 "landscape" 309 206 2,
+    4 "square" 228 228 2,
+    4 "portrait" 228 342 2,
+    4 "landscape" 228 152 2;
 
-  @each $col, $size, $width, $height in $size {
+  @each $col, $size, $width, $height, $tabletCol in $size {
     &.__temp__#{ $col }-cols-#{ $size }-#{ $width }_#{ $height } {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(#{ $col }, minmax(auto, #{ $width }px));
+      // flex-wrap: wrap;
       gap: 16px;
       list-style: none;
       justify-content: center;
 
+      @media(max-width: 768px) {
+        grid-template-columns: repeat(#{ $tabletCol }, minmax(auto, #{ $width }px));
+      }
+
+      @media(max-width: 425px) {
+        grid-template-columns: repeat(1, minmax(auto, 460px));
+      }
+
       .tag-template--col {
-        width: #{ $width }px;
+        // width: #{ $width }px;
         height: #{ $height }px;
         max-width: 100%;
+        border-radius: 4px;
+        border: solid 1px #eeeeee;
+
+        .__icon {
+          display: none;
+        }
+
+        @media(max-width: 425px) {
+          height: auto !important;
+          background: #FAFAFA !important;
+          display: flex;
+          padding: 16px;
+          border-color: #B3C1C3;
+          border-width: 2px;
+          line-height: normal;
+          align-items: center;
+          justify-content: space-between;
+          margin: 0;
+
+          .__label {
+            display: block;
+            position: initial;
+            transform: none;
+            -webkit-transform: none;
+            color: #19242D;
+            // text-align: center;
+          }
+
+          .__icon {
+            display: block; 
+          }
+        }
       }
     }
   }
 
   .tag-template--col {
     cursor: pointer;
+    position: relative;
+    transition: .1s ease;
+    -webkit-transition: .1s ease;
+
+    &:hover {
+      outline: 2px solid #006875;
+      box-shadow: 0 0 0 6px #0068752e;
+
+      @media(max-width: 425px) {
+        box-shadow: none;
+        outline: none;
+        border-color: #006875;
+        background: rgba(0, 104, 117, 0.1803921569) !important;
+      }
+    }
+
+    .__label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      z-index: 9;
+      display: none;
+    }
+
+    &.__no-image {
+
+      .__label {
+        display: block;
+        letter-spacing: 0;
+        text-align: center;
+      }
+    }
+
+    @media(max-width: 425px) {
+
+    }
   }
 }
 
@@ -424,9 +555,13 @@ ul.select-box-component {
   display: grid;
   gap: 16px;
 
+  @media(max-width: 768px) { 
+    gap: 8px;
+  }
+
   .tag-template--list {
-    background: #F2F2F2;
-    border-radius: 3px;
+    background: #FAFAFA;
+    border-radius: 4px;
     max-width: 100%;
     list-style: none;
     padding: 20px;
@@ -438,13 +573,26 @@ ul.select-box-component {
     align-items: center;
     transition: .3s ease;
     -webkit-transition: .3s ease;
+    border: solid 1px #eee;
+
+    &:hover {
+      border-color: #006875;
+      background: #0068752e;
+    }
+
+    @media(max-width: 768px) {
+      border-color: #B3C1C3;
+      padding: 16px;
+      border-width: 2px;
+      color: #19242D;
+    }
 
     .__icon {
       line-height: 0; 
     }
 
     &:hover {
-      background: darken(#F2F2F2, 5);
+      // background: darken(#F2F2F2, 5);
     }
   }
 
@@ -473,4 +621,40 @@ ul.select-box-component {
   }
 
   
+}
+
+.q-heading {
+  display: grid;
+  grid-template-columns: minmax(auto, 130px) 1fr minmax(auto, 130px);  
+  width: 100%;
+  align-items: center;
+  width: 960px;
+  max-width: 100%;
+
+  @media(max-width: 768px) {
+    grid-template-columns: 1fr;  
+    gap: 16px;
+  }
+
+  div:empty {
+    display: block;
+  }
+
+  &__question-text {
+    text-align: center;
+    margin-top: 0 !important;
+    // font-style: normal;
+    // font-weight: 600;
+    // color:#004F59;
+  }
+
+  &__back-action {
+    text-decoration: none;
+    color: #747474;
+    font-size: 16px;
+    display: flex;
+    font-weight: 600;
+    gap: 6px;
+    align-items: center;
+  }
 }
