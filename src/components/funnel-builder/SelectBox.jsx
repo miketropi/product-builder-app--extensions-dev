@@ -66,7 +66,8 @@ export default function SelectBox({ options, multiple, value, onChange, template
     
     let isCol = ([
       '2-cols-square-472_472', 
-      '2-cols-portrait-472_630', 
+      // '2-cols-portrait-472_630', 
+      '2-cols-portrait-472_708', 
       '2-cols-landscape-472_314',
       '3-cols-square-309_309', 
       '3-cols-portrait-309_463',
@@ -218,7 +219,8 @@ export default function SelectBox({ options, multiple, value, onChange, template
       </>
     },
     '2-cols-square-472_472': templateTags,
-    '2-cols-portrait-472_630': templateTags,
+    // '2-cols-portrait-472_630': templateTags,
+    '2-cols-portrait-472_708': templateTags,
     '2-cols-landscape-472_314': templateTags,
     '3-cols-square-309_309': templateTags,
     '3-cols-portrait-309_463': templateTags,
