@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useRef, useCallback } from "react";
 import ProductBuilderApi from '../libs/api';
 import { getShopifyProductJson, addToCart, renderContents } from '../libs/helpers';
+import PBuilderProxyApi from "../libs/PBuilderProxyApi";
 
 const ProductBuilderContext = createContext(null);
 const __ADDON_MULTIPLE_SUPPORT = false;
@@ -8,6 +9,7 @@ const __ADDON_MULTIPLE_SUPPORT = false;
 const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
   const { storeId, productId, productUrl } = QUERY;
   const API = useRef(null);
+  const ProxyApi = useRef(null);
   const [ loadingInit, setLoadingInit ] = useState(true);
   const [ shopifyProductObject, setShopifyProductObject ] = useState(null);
   const [ productBuilderObject, setProductBuilderObject ] = useState(null);
@@ -55,6 +57,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
 
   useEffect(() => {
     API.current = new ProductBuilderApi(API_ENDPOINT, API_KEY, storeId);
+    ProxyApi.current = new PBuilderProxyApi();
     __getProduct_Fn();
   }, [])
 
@@ -199,6 +202,15 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
 
     setUserAddonSelected(__userAddonSelected);
   }
+
+  /**
+   * 
+   * @param {*} vID #ex: gid://shopify/ProductVariant/44819898728697
+   * @returns variant data || null
+   */
+  const onGetProductVariantByID_Fn = async (vID) => {
+    return await ProxyApi.current.getProductVariantByID(vID);
+  }
     
   const value = {
     version: '1.0.0',
@@ -223,6 +235,7 @@ const ProductBuilderProvider = ({ children, API_ENDPOINT, API_KEY, QUERY }) => {
     onPushAddonToCache_Fn,
     onAddonSelected_Fn,
     clearAddon_Fn,
+    onGetProductVariantByID_Fn,
   }
 
   return <ProductBuilderContext.Provider value={ value } >

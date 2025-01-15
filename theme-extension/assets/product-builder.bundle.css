@@ -485,6 +485,10 @@
   opacity: 0.8;
 }
 
+.__hidden {
+  display: none;
+}
+
 .section-header ~ .shopify-section-group-header-group {
   z-index: 9;
 }

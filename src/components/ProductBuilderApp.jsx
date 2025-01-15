@@ -76,5 +76,35 @@ export default function ProductBuilderApp() {
         return (__loading == true ? loadingTemplate : productBuilderTemplate);
       })(loadingInit)
     }
+    {/* <button onClick={ e => {
+      e.preventDefault();
+      new Promise((resolve, reject) => {
+        fetch('/apps/bmapp', {
+          method: 'POST',
+          redirect: 'manual', 
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          },
+          body: JSON.stringify({
+            proccess: 'productBuilder',
+            args: {
+              task: 'getProductVariantByID',
+              data: 'gid://shopify/ProductVariant/44819898728697'
+            }
+          }),
+        })
+        .then((response) => {
+          console.log('response', response)
+          return response;
+        })
+        .then((data) => {
+          resolve(data) 
+        })
+        .catch((err) => {
+          reject(err)
+        })
+      })
+    } } >Test App Proxi</button> */}
   </div>
 }

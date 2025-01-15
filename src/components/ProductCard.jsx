@@ -1,9 +1,9 @@
 import { useEffect, useCallback, useState } from "react";
 import { toPrice } from "../libs/helpers";
-import { useProductBuilderContext } from "../context/ProductBuilderContext";
+import { useProductBuilderContext } from "../context/ProductBuilderContext"; 
 
 export default function ProductCard({ optkey, product, parent, multiple }) {
-  const { onPushAddonToCache_Fn, addOnCaching, addonSelected, onAddonSelected_Fn, userAddonSelected } = useProductBuilderContext();
+  const { onPushAddonToCache_Fn, addOnCaching, addonSelected, onAddonSelected_Fn, userAddonSelected, onGetProductVariantByID_Fn } = useProductBuilderContext();
   const { id, title, displayName, price, image } = product;
   let __title = (title == 'Default Title' ? parent.title : displayName);
 
@@ -24,27 +24,28 @@ export default function ProductCard({ optkey, product, parent, multiple }) {
       }
 
       setLoading(true);
-      let product_json_url = `/products/${ parent.handle }.json`;
-      const res = await fetch(product_json_url)
-      const { product: { variants, images, image, title } } = await res.json();
-      let findItem = variants.find(__v => __v.id == product.id.replace('gid://shopify/ProductVariant/', ''));
-      
-      let __productDarta = {
-        id: findItem.id,
-        title: `${ title } - ${ findItem.title }`,
-        price: findItem.price,
-        thumb: ((_images) => {
-          if(!findItem.image_id) return image?.src;
+      // let vID = product.id.split('/').at(-1);
+      let productVariantData = await onGetProductVariantByID_Fn(`${ product.id }`);
+      if(!productVariantData || productVariantData == null) {
+        setProductData({...productData, unavailable: true});
+        return;
+      } else {
+        const { id, image, price, sku, title } = productVariantData;
+        const idNumber = id.replace('gid://shopify/ProductVariant/', '');
+        let __title = (title == 'Default Title' ? parent.title : title);
+        let __productData = {
+          id: idNumber,
+          title: `${ __title }`,
+          price: price?.amount,
+          thumb: image?.url,
+        }
 
-          let found = _images.find(i => i.id == findItem.image_id );
-          return (found ? found.src : '')
-        })(images),
+        setProductData(__productData);
+        onPushAddonToCache_Fn(__productData);
+        
+        setLoading(false);
       }
-
-      setProductData(__productDarta);
-      onPushAddonToCache_Fn(__productDarta);
-      
-      setLoading(false);
+      return;
     }
 
     __getVariantData();
@@ -53,11 +54,12 @@ export default function ProductCard({ optkey, product, parent, multiple }) {
   return <div 
     className={ [
       'product-builder__product-card', 
+      ( productData?.unavailable == true ? '__hidden' : ''),
       (loading ? '__loading-effect' : ''), 
       // (addonSelected.includes(productData.id) ? '__selected' : ''),
       (() => {
         let f = userAddonSelected.find(a => (a.id == productData.id && a.optkey == optkey));
-        return (f ? '__selected' : '');
+        return (f ? '__selected' : ''); 
       })()
     ].join(' ') }
     onClick={ e => {
