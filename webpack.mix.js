@@ -1,6 +1,6 @@
 const mix = require('laravel-mix');
-
-// mix.extract(['react', 'react-dom'], 'product-builder-vendor.js');
+const path = require('path');
+const { exec } = require('child_process');
 
 mix
   .js('./src/main.js', './theme-extension/assets/product-builder.bundle.js')
@@ -9,5 +9,32 @@ mix
   .sass('./src/scss/main.scss', 'product-builder.bundle.css')
   .sass('./src/scss/funnel.scss', 'funnel-builder.bundle.css')
   .setPublicPath('./theme-extension/assets/')
+  .options({
+    terser: {
+      extractComments: false,
+    },
+  })
 
-mix.copyDirectory('./theme-extension', process.env.COPY_PATH); 
+if (process.env.COPY_PATH) {
+  mix.webpackConfig({
+    plugins: [
+      {
+        apply: (compiler) => {
+          compiler.hooks.afterEmit.tapAsync('RoboCopyPlugin', (_compilation, callback) => {
+            const src = path.resolve(__dirname, './theme-extension');
+            const dest = path.resolve(__dirname, process.env.COPY_PATH);
+            // robocopy exit codes 0-7 are success (bit flags for files copied, skipped, etc.)
+            exec(`robocopy "${src}" "${dest}" /E /IS /IT /IM /NP /NFL /NDL`, (err) => {
+              if (err && err.code > 7) {
+                console.error('[RoboCopy] Copy failed with code:', err.code);
+              } else {
+                console.log('[RoboCopy] Theme extension synced to:', dest);
+              }
+              callback();
+            });
+          });
+        }
+      }
+    ]
+  });
+}
