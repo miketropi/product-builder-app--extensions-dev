@@ -5,7 +5,7 @@ export default function ProductVariantOptions({ options }) {
 
   return <div className="__variant-options __box-option">
     <div className="__box-option__heading">
-      <h4>Select Variant*</h4>
+      <h4>Select Variant *</h4>
     </div>
     <div className="__box-option__options">
       {

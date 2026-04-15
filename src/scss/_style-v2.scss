@@ -1,0 +1,945 @@
+// ─────────────────────────────────────────────
+// Product Builder V2 — Design System
+// ─────────────────────────────────────────────
+
+$pb2-accent:       $accent-color;
+$pb2-accent-bg:    #E3F3F6;
+$pb2-border:       #E6E6E6;
+$pb2-text:         #111827;
+$pb2-text-muted:   #989898;
+$pb2-bg-card:      #ffffff;
+$pb2-bg-hover:     #f0fafb;
+$pb2-bg-image:     #f9f9f9;
+$pb2-radius:       10px;
+$pb2-radius-sm:    6px;
+
+// ─────────────────────────────────────────────
+// Layout
+// ─────────────────────────────────────────────
+
+.pb2-app {
+
+  .pb2-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 84px;
+    align-items: start;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Image Column
+// ─────────────────────────────────────────────
+
+.pb2__image-col {
+  background: #F7F8F8;
+  height: 100%;
+  .__product-images-v2 {
+
+    padding: 52px;
+    position: sticky;
+    top: 20px;
+
+    .__main-image {
+
+      overflow: hidden;
+      line-height: 0;
+
+      img {
+        width: 100%;
+        max-width: 100%;
+        display: block;
+        aspect-ratio: 1 / 1;
+        object-fit: contain;
+      }
+    }
+
+    .__thumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      justify-content: center;
+
+      .__thumb-arrow {
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        line-height: 1;
+        color: $pb2-text;
+        cursor: pointer;
+        padding: 0;
+        border-radius: 50%;
+        transition: color 0.2s, background 0.15s;
+
+        &:hover:not(:disabled) {
+          background: $pb2-bg-image;
+          color: $pb2-accent;
+        }
+
+        &:disabled {
+          opacity: 0.25;
+          cursor: default;
+        }
+      }
+
+      .__thumb-row {
+        display: flex;
+        gap: 8px;
+        flex: 1;
+        justify-content: center;
+
+        .__thumb-item {
+          flex: 0 0 107px;
+          max-width: 107px;
+          aspect-ratio: 1;
+          border-radius: $pb2-radius-sm;
+          overflow: hidden;
+          cursor: pointer;
+          border: 2px solid transparent;
+          background: $pb2-bg-image;
+          transition: border-color 0.2s;
+          line-height: 0;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          &.__active {
+            border-color: $pb2-accent;
+          }
+
+          &:hover:not(.__active) {
+            border-color: rgba($pb2-accent, 0.4);
+          }
+        }
+      }
+    }
+  }
+
+  // skeleton placeholder
+  .pb2__skeleton-img {
+    border-radius: 12px;
+    padding-bottom: 100%;
+    background: #e5e7eb;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Meta Column
+// ─────────────────────────────────────────────
+
+.pb2__meta-col {
+  padding: 48px 0;
+  max-width: 552px;
+}
+
+// ─────────────────────────────────────────────
+// Heading
+// ─────────────────────────────────────────────
+
+.pb2__heading {
+  padding-bottom: 32px;
+  border-bottom: 1px solid $pb2-border;
+  margin-bottom: 32px;
+
+  .pb2__vendor {
+    color: #989898;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 125%;
+    letter-spacing: 0.65px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    .pb2__vendor-link {
+      color: $pb2-text-muted;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+        color: $pb2-accent;
+      }
+    }
+  }
+
+  .pb2__moniker {
+    color: #19242D;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 125%;
+    margin: 0;
+    margin-bottom: 4px;
+  }
+
+  h1 {
+    color: #19242D;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%;
+    margin: 0;
+    margin-bottom: 8px;
+    &.pb2__title--full {
+      // no moniker — slightly larger weight to compensate
+      font-size: 1.5em;
+    }
+  }
+
+  .pb2__sku {
+    color: #989898;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 125%;
+    text-transform: uppercase;
+  }
+}
+
+
+// ─────────────────────────────────────────────
+// Variant Selector — custom dropdown
+// ─────────────────────────────────────────────
+
+.pb2__variant-options {
+  margin-bottom: 32px;
+}
+
+.pb2__variant-label {
+  color: #747474;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 125%;
+  letter-spacing: 0.65px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  gap: 12px;
+  &::after{
+    content: '';
+    background: #E8E8E8;
+    height: 1px;
+    width: 100%;
+  }
+}
+
+.pb2__variant-dropdown {
+  position: relative;
+
+  .pb2__dropdown-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    color: $pb2-accent;
+    text-align: left;
+    transition: border-radius 0.15s;
+    border-radius: 6px;
+    border: 1px solid #B3B3B3;
+    background: linear-gradient(180deg, #FFF 40.87%, #F7F7F7 100%);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.10);
+    color: #19242D;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    padding: 13px 16px;
+    .pb2__variant-chevron {
+      display: flex;
+      color: #000000;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+  }
+
+  &.__open {
+    .pb2__dropdown-trigger {
+      border: 2px solid #006D7A;
+      background: linear-gradient(180deg, #FFF 40.87%, #F7F7F7 100%);
+      .pb2__variant-chevron {
+        transform: rotate(180deg);
+        color: #006D7A;
+      }
+    }
+  }
+
+  .pb2__dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 2px solid #006D7A;
+    background: #FFF;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.19), 0 6px 6px 0 rgba(0, 0, 0, 0.23);
+    margin-top: 4px;
+  }
+
+  .pb2__dropdown-item {
+    padding: 0.8em 1em;
+    font-size: 0.9em;
+    cursor: pointer;
+    color: $pb2-text;
+    transition: background 0.15s;
+
+    &:hover {
+      background: $pb2-bg-hover;
+    }
+
+    &.__selected {
+      color: $pb2-accent;
+      font-weight: 600;
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+// Option Steps (accordion)
+// ─────────────────────────────────────────────
+
+.pb2__option-meta {
+
+  .pb2__option-box:not(:last-child){
+    border-bottom: 1px solid $pb2-border;
+  }
+}
+
+.pb2__option-box {
+
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0;
+    cursor: pointer;
+
+    .pb2__step-num {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #F2F2F2;
+      color: #666666;
+      font-weight: 600;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+
+      svg {
+        width: 42%;
+      }
+
+      &.__done {
+        background: $pb2-accent;
+        color: #fff;
+
+        svg path {
+          fill: #fff;
+        }
+      }
+    }
+
+    h4 {
+      color: #666;
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 100%; /* 13px */
+      letter-spacing: 0.65px;
+      text-transform: uppercase;
+      margin: 0;
+      width: 100%;
+    }
+
+    
+    &.__active{
+        h4{
+          color: #004F59;
+          font-weight: 700;
+        }
+        .pb2__step-num:not(.__done){
+          background-color: #E3F3F6;
+          color: #004F59;
+        }
+    }
+
+    .pb2__selected-value {
+      max-width: 40%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.78em;
+      color: $pb2-accent;
+      font-weight: 600;
+      background: $pb2-accent-bg;
+      padding: 0.3em 0.75em;
+      border-radius: 20px;
+      min-width: 56px;
+    }
+
+    .pb2__chevron {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      color: $pb2-text-muted;
+      transition: transform 0.25s ease, color 0.2s;
+
+      &.__open {
+        transform: rotate(180deg);
+        color: $pb2-accent;
+      }
+    }
+  }
+
+  // Option cards grid
+  &__options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding-bottom: 16px;
+    padding-left: 32px;
+    max-height: 428px;
+    overflow: auto;
+    margin-bottom: 16px;
+    .pb2-option-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.2s, background 0.2s;
+      border-radius: 4px;
+      border: 1px solid #FAFAFA;
+      background: #FFF;
+      box-shadow: 0 1px 0 0 rgba(17, 17, 26, 0.10);
+      gap: 8px;
+
+      img {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: contain;
+        margin-bottom: 0.5em;
+        height: 100px;
+      }
+
+      svg {
+        width: 55%;
+        margin-bottom: 0.5em;
+        opacity: 0.3;
+      }
+
+      h4 {
+        color: #666;
+        text-align: center;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 125%; /* 17.5px */
+        margin: 0;
+      }
+
+      &:hover {
+        border-color: $pb2-accent;
+        background: #F1F8F9;
+      }
+
+      &.__selected {
+        border-color: $pb2-accent;
+        background: #F1F8F9;
+
+        svg {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  // Addon layout
+  &__addon {
+    padding-bottom: 16px;
+    padding-left: 32px;
+
+    .pb2__clear-none {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: $pb2-text-muted;
+      letter-spacing: 0.05em;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      border-radius: 4px;
+      border: 1px solid #FAFAFA;
+      background: #FFF;
+      box-shadow: 0 1px 0 0 rgba(17, 17, 26, 0.10);
+      max-width: calc(100% / 3 - 4px);
+      min-height: 158px;
+      margin-bottom: 8px;
+      &:hover {
+        border-color: $pb2-accent;
+        color: $pb2-accent;
+        background: $pb2-bg-hover;
+      }
+    }
+
+    .pb2__addon-group-label {
+      display: inline-block;
+      background: #f3f4f6;
+      border-radius: 20px;
+      padding: 0.35em 0.9em;
+      font-size: 11px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 0.65em;
+    }
+  }
+}
+
+// Next-step button (inside accordion)
+.pb2__next-step-btn {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  padding: 0.85em;
+  background: $pb2-accent;
+  color: #fff;
+  border: none;
+  border-radius: $pb2-radius;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Product Cards (add-on grid)
+// ─────────────────────────────────────────────
+
+.pb2__card-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.pb2__product-card {
+  border: 1.5px solid $pb2-border;
+  border-radius: $pb2-radius;
+  padding: 0.65em 0.5em;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .__img {
+    margin-bottom: 0.45em;
+    line-height: 0;
+
+    img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: contain;
+      height: 100px;
+    }
+  }
+
+  .__title {
+    color: #666;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 125%;
+    margin: 0;
+  }
+
+  .__price {
+    font-size: 11px;
+    font-weight: 700;
+    color: #000;
+    margin: 4px 0;
+  }
+
+  &:hover {
+    border-color: $pb2-accent;
+    background: $pb2-bg-hover;
+  }
+
+  &.__selected {
+    border-color: $pb2-accent;
+    background: $pb2-accent;
+
+    .__title,
+    .__price {
+      color: #fff;
+    }
+  }
+
+  &.__hidden {
+    display: none;
+  }
+
+  &.__loading-effect {
+    pointer-events: none;
+    position: relative;
+
+    > * {
+      opacity: 0.3;
+    }
+
+    &::after {
+      content: "loading…";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      color: $pb2-text;
+      opacity: 1;
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+// Feature Boxes
+// ─────────────────────────────────────────────
+
+.pb2-feature-boxes {
+  margin-top: 32px;
+  margin-bottom: 32px;
+
+  &__grid {
+    display: flex;
+  }
+
+  &__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 12px;
+    gap: 8px;
+    &:not(:last-child){
+      border-right: 1px solid #D8DFDF;
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  &__label {
+    margin: 0;
+    color: #000;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 125%;
+    padding-bottom: 6px;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Footer
+// ─────────────────────────────────────────────
+
+.pb2__footer {
+  margin-top: 32px;
+  .pb2__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5em;
+    margin-bottom: 1em;
+
+    .pb2__price {
+      color: #000;
+      text-align: right;
+      font-variant-numeric: lining-nums tabular-nums;
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+  }
+
+  .pb2__atc-btn {
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: opacity 0.25s, background 0.25s;
+    border-radius: 6px;
+    border: 1px solid #004F59;
+    background: linear-gradient(180deg, #007A79 -17.86%, #00515B 100%);
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.25), 0 1px 1px 0 rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.10) inset;
+    color: #C1FCCA;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    padding: 16px 24px;
+    svg {
+      flex-shrink: 0;
+      path{
+        fill: #C1FCCA;
+      }
+    }
+
+    .__spinner {
+      display: inline-block;
+      animation: pb2-spin 0.75s linear infinite;
+      line-height: 0;
+    }
+
+    &.__disabled,
+    &.__loading {
+      pointer-events: none;
+      background: #DDDDDD;
+      color: #8C8C8C;
+      border-color: #DDDDDD;
+      svg{
+        path{
+          fill: #8C8C8C;
+        }
+      }
+    }
+
+    &:hover {
+      opacity: 0.88;
+    }
+  }
+}
+
+@keyframes pb2-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+// ─────────────────────────────────────────────
+// Skeleton loader
+// ─────────────────────────────────────────────
+
+.pb2__skel {
+  background: #e5e7eb;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent 0, rgba(255,255,255,0.45) 50%, transparent 100%);
+    animation: pb2-shimmer 1.5s infinite;
+  }
+}
+
+@keyframes pb2-shimmer {
+  100% { transform: translateX(100%); }
+}
+
+// Skeleton — uses real heading + actual step structure with shimmer lines
+
+.pb2__skeleton-container {
+
+  // Step label shimmer inside h4
+  .pb2__skel-label {
+    display: inline-block;
+    height: 0.75em;
+    border-radius: 4px;
+    vertical-align: middle;
+  }
+
+  // Price shimmer bar
+  .pb2__skel-price {
+    display: block;
+    height: 1.4em;
+    width: 28%;
+    border-radius: 4px;
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+  }
+
+  // ATC button shimmer bar
+  .pb2__skel-atc {
+    display: block;
+    height: 3em;
+    border-radius: $pb2-radius;
+    width: 100%;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Product Tabs Accordion
+// ─────────────────────────────────────────────
+
+.pb2-tabs {
+  margin-top: 2em;
+  border-top: 1px solid $pb2-border;
+}
+
+.pb2-tab {
+
+  border-bottom: 1px solid $pb2-border;
+
+  &__btn {
+
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    padding: 16px 0;
+    text-align: left;
+    width: 100%;
+    color: #3D3D3D;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+
+    &[aria-expanded="true"] {
+
+      .pb2-tab__chevron {
+        transform: rotate(180deg);
+        color: $pb2-accent;
+      }
+    }
+  }
+
+  &__chevron {
+    flex-shrink: 0;
+    color: $pb2-text-muted;
+    transition: transform 0.25s ease, color 0.2s;
+    right: 16px;
+    position: relative;
+  }
+
+  &__body {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease;
+  }
+
+  &__content {
+    padding-bottom: 1.25em;
+    font-size: 14px;
+    color: #000;
+    line-height: 150%;
+    // Reset any opinionated product description styles
+    p { margin: 0 0 16px; }
+    p:last-child { margin-bottom: 0; }
+    ul li{color: #000;}
+    h1,h2,h3,h4{
+      font-weight: 600;
+    }
+    h1{
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    h2{
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    h3{
+      font-size: 15px;
+    }
+
+    img { max-width: 100%; }
+
+    // ── Specifications table (.specs-table) ──
+    .specs-table {
+      width: 100%;
+      font-size: 0.875em;
+      margin: 0;
+    }
+
+    .specs-row {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      gap: 0 1em;
+      padding: 0.65em 0.75em;
+
+      &:nth-child(even) {
+        background: #f3f4f6;
+      }
+    }
+
+    .specs-label {
+      color: $pb2-text;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .specs-value {
+      color: $pb2-text-muted;
+      line-height: 1.5;
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+// Responsive
+// ─────────────────────────────────────────────
+
+@media (max-width: 900px) {
+  .pb2-app .pb2-container {
+    grid-template-columns: 1fr;
+    gap: 1.5em;
+  }
+
+  .pb2__image-col {
+    position: static;
+  }
+
+  .pb2__meta-col {
+    padding: 48px 0;
+  }
+}
