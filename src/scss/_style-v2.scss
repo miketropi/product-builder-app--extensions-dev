@@ -10,8 +10,8 @@ $pb2-text-muted:   #989898;
 $pb2-bg-card:      #ffffff;
 $pb2-bg-hover:     #f0fafb;
 $pb2-bg-image:     #f9f9f9;
-$pb2-radius:       10px;
-$pb2-radius-sm:    6px;
+$pb2-radius:       4px;
+$pb2-radius-sm:    2px;
 
 // ─────────────────────────────────────────────
 // Layout
@@ -70,7 +70,7 @@ $pb2-radius-sm:    6px;
         justify-content: center;
         background: none;
         border: none;
-        font-size: 1.5em;
+        font-size: 2em;
         line-height: 1;
         color: $pb2-text;
         cursor: pointer;
@@ -379,17 +379,14 @@ $pb2-radius-sm:    6px;
     }
 
     .pb2__selected-value {
-      max-width: 40%;
+      color: #006875;
+      font-size: 12px;
+      font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-size: 0.78em;
-      color: $pb2-accent;
-      font-weight: 600;
-      background: $pb2-accent-bg;
-      padding: 0.3em 0.75em;
-      border-radius: 20px;
-      min-width: 56px;
+      width: 250px;
+      text-align: right;
     }
 
     .pb2__chevron {
@@ -413,7 +410,7 @@ $pb2-radius-sm:    6px;
     gap: 8px;
     padding-bottom: 16px;
     padding-left: 32px;
-    max-height: 428px;
+    max-height: 480px;
     overflow: auto;
     margin-bottom: 16px;
     .pb2-option-item {
@@ -434,8 +431,6 @@ $pb2-radius-sm:    6px;
         width: 100%;
         aspect-ratio: 1;
         object-fit: contain;
-        margin-bottom: 0.5em;
-        height: 100px;
       }
 
       svg {
@@ -506,8 +501,9 @@ $pb2-radius-sm:    6px;
       padding: 0.35em 0.9em;
       font-size: 11px;
       font-weight: 700;
-      color: #374151;
+      color: #666;
       margin-bottom: 0.65em;
+      text-transform: uppercase;
     }
   }
 }
@@ -563,7 +559,6 @@ $pb2-radius-sm:    6px;
       width: 100%;
       aspect-ratio: 1;
       object-fit: contain;
-      height: 100px;
     }
   }
 
@@ -578,10 +573,10 @@ $pb2-radius-sm:    6px;
   }
 
   .__price {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     color: #000;
-    margin: 4px 0;
+    margin: 4px 0 0;
   }
 
   &:hover {
@@ -591,12 +586,12 @@ $pb2-radius-sm:    6px;
 
   &.__selected {
     border-color: $pb2-accent;
-    background: $pb2-accent;
+    background: #F1F8F9;
 
-    .__title,
-    .__price {
-      color: #fff;
-    }
+    // .__title,
+    // .__price {
+    //   color: #fff;
+    // }
   }
 
   &.__hidden {
@@ -925,21 +920,135 @@ $pb2-radius-sm:    6px;
   }
 }
 
+@media (max-width: 1192px) {
+  .pb2-app .pb2-container {
+    gap: 40px;
+  }
+  
+  .pb2__option-box__options,
+  .pb2__option-box__addon{
+    padding-left: 0;
+  }
+
+  .pb2__option-box__heading .pb2__selected-value{
+    max-width: 80px;
+    font-size: 11px;
+  }
+}
+
 // ─────────────────────────────────────────────
 // Responsive
 // ─────────────────────────────────────────────
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
+
+  .pb2__option-box__heading .pb2__selected-value{
+    max-width: 200px;
+  }
+
+  .pb2-app .pb2-container {
+    gap: 40px;
+  }
+
+  .pb2__image-col {
+    .__product-images-v2 {
+      padding: 32px;
+      max-width: 552px;
+      margin: auto;
+    }
+ 
+    .__thumb-item {
+      flex: 0 0 80px;
+      max-width: 80px;
+    }
+  }
+
+  .pb2__meta-col {
+    max-width: none;
+    padding: 32px 0;
+  }
+  
+}
+
+@media (max-width: 990px) {
+
+  .pb2__option-box__heading .pb2__selected-value{
+    max-width: 80px;
+  }
+
   .pb2-app .pb2-container {
     grid-template-columns: 1fr;
-    gap: 1.5em;
   }
 
   .pb2__image-col {
     position: static;
-  }
+
+  .__product-images-v2 {
+      padding:24px 16px;
+      .__thumb-nav .__thumb-row .__thumb-item{
+        flex: 0 0 60px;
+        max-width: 60px;
+      }
+    }
+  } 
 
   .pb2__meta-col {
-    padding: 48px 0;
+    padding: 0 0 48px;
   }
+
+  .pb2__heading .pb2__vendor,
+  .pb2__heading .pb2__sku,
+  .pb2__variant-label{
+    font-size: 12px;
+  }
+
+  .pb2__heading h1{
+    font-size: 16px;
+  }
+
+  .pb2__heading .pb2__moniker{
+    font-size: 24px;
+  }
+
+  .pb2__heading,
+  .pb2__variant-options{
+    margin-bottom: 24px;
+  }
+
+  .pb2__footer{
+    margin-top: 24px;
+    .pb2__price-row .pb2__price{
+      font-size: 20px;
+    }
+
+    .pb2__atc-btn{
+      font-size: 13px;
+      padding: 10px 16px;
+    }
+  }
+
+  .pb2-feature-boxes__icon{
+    width: 24px;
+    height: 24px;
+  }
+
+  .pb2-feature-boxes__label{
+    font-size: 12px;
+  }
+
+  .pb2-feature-boxes{
+    margin: 24px 0;
+  }
+
+  .pb2-tab__btn{
+    font-size: 16px;
+  }
+  
+  
+  .pb2__option-box__options .pb2-option-item h4,
+  .pb2__product-card .__title,
+  .pb2-tab__content{
+    font-size: 13px;
+  }
+  
 }

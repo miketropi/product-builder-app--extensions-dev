@@ -1,9 +1,9 @@
 export default class ProxyApi {
 
   __PROCCESS = ''
-  __PROXY_ENDPOINT = '/apps/bmapp'
+  __PROXY_ENDPOINT = '/apps/bmapp_au'
 
-  constructor(proccess) {
+  constructor(proccess) { 
     this.__PROCCESS = proccess;
   }
 
