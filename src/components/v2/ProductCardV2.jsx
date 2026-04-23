@@ -20,6 +20,7 @@ export default function ProductCardV2({ optkey, product, parent, multiple }) {
     title: __defaultTitle,
     price: price,
     thumb: image?.originalSrc,
+    outOfStock: false,
   });
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export default function ProductCardV2({ optkey, product, parent, multiple }) {
       const cacheFound = [...addOnCaching].find(
         c => c.id === product.id.replace('gid://shopify/ProductVariant/', '')
       );
+
       if (cacheFound) {
         setProductData(cacheFound);
         return;
@@ -34,19 +36,24 @@ export default function ProductCardV2({ optkey, product, parent, multiple }) {
 
       setLoading(true);
       const variantData = await onGetProductVariantByID_Fn(product.id);
+
       if (!variantData) {
         setProductData(prev => ({ ...prev, unavailable: true }));
+        setLoading(false);
         return;
       }
 
-      const { id, image, price, title } = variantData;
+      const { id, image, price, title, availableForSale } = variantData;
+
       const idNumber = id.replace('gid://shopify/ProductVariant/', '');
       const resolvedTitle = title === 'Default Title' ? parent.title : title;
+
       const data = {
         id: idNumber,
         title: resolvedTitle,
         price: price?.amount,
         thumb: image?.url,
+        outOfStock: availableForSale ? false : true,
       };
 
       setProductData(data);
@@ -57,7 +64,9 @@ export default function ProductCardV2({ optkey, product, parent, multiple }) {
     __load();
   }, [parent]);
 
-  const isSelected = !!userAddonSelected.find(a => a.id === productData.id && a.optkey === optkey);
+  const isSelected = !!userAddonSelected.find(
+    a => a.id === productData.id && a.optkey === optkey
+  );
 
   return (
     <div
@@ -66,15 +75,32 @@ export default function ProductCardV2({ optkey, product, parent, multiple }) {
         productData?.unavailable ? '__hidden' : '',
         loading ? '__loading-effect' : '',
         isSelected ? '__selected' : '',
+        productData?.outOfStock ? 'out-of-stock' : '',
       ].join(' ')}
-      onClick={() => onAddonSelected_Fn(productData.id, price, optkey, productData.title, multiple)}>
+      onClick={() => {
+        onAddonSelected_Fn(
+          productData.id,
+          price,
+          optkey,
+          productData.title,
+          multiple
+        );
+      }}
+    >
       <div className="__img">
-        {productData.thumb && <img src={productData.thumb} alt={productData.title} loading="lazy" />}
+        {productData.thumb && ( 
+          <img
+            src={productData.thumb}
+            alt={productData.title}
+            loading="lazy"
+          />
+        )}
       </div>
       <div>
         <p className="__title">{productData.title}</p>
         <p className="__price">{toPrice(productData.price)}</p>
-      </div>
+      </div> 
+      {productData?.outOfStock && (<p className="__out-of-stock-label">Out of stock</p>)}
     </div>
   );
 }
